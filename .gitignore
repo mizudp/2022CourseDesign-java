@@ -1,0 +1,16 @@
+/bin/
+/.idea/
+/.ideaSetting/
+/.settings/
+/log/
+/target/
+/out/
+
+
+.classpath
+.project
+
+*.log
+*.class
+*.iml
+*.iws
