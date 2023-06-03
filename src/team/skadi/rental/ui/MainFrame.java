@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 	
-	public static final int FRAME_WIDTH = 600, FRAME_HEIGHT = 400;
+	public static final int FRAME_WIDTH = 1000, FRAME_HEIGHT = 610;
 	public static final int FRAME_MIN_WIDTH, FRAME_MIN_HEIGHT;
 
 	static {
@@ -23,7 +23,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	public MainFrame() {
-		super("移动电源租凭系统");
+		super("德莱联盟电源租凭系统");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = toolkit.getScreenSize();
