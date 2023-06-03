@@ -1,32 +1,32 @@
 package team.skadi.rental.dao.impl;
 
-import team.skadi.rental.bean.User;
-import team.skadi.rental.dao.UserDao;
+import team.skadi.rental.bean.Power;
+import team.skadi.rental.dao.PowerDao;
 
-public class UserDaoImp implements UserDao {
+public class PowerDaoImp implements PowerDao {
 
 	@Override
-	public User findUserById(String userId) {
+	public Power findPowerById(String powerId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void updateUser(User user) {
+	public void createNewPower() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void createNewUser() {
+	public void addNewPower(String powerId, int serialnum) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void addNewUser(String userId, int serialnum) {
+	public void updatePower(Power power) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
