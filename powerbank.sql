@@ -11,7 +11,7 @@
  Target Server Version : 50703
  File Encoding         : 65001
 
- Date: 03/06/2023 13:28:17
+ Date: 03/06/2023 15:43:40
 */
 
 SET NAMES utf8mb4;
@@ -45,10 +45,11 @@ CREATE TABLE `mangers`  (
 DROP TABLE IF EXISTS `powers`;
 CREATE TABLE `powers`  (
   `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电源id',
-  `serialnum` int(255) NULL DEFAULT NULL COMMENT '电源序列号',
+  `serialnum` int(255) NOT NULL AUTO_INCREMENT COMMENT '电源序列号',
   `left` double(255, 0) NULL DEFAULT NULL COMMENT '剩余电量',
-  `status` int(255) NULL DEFAULT NULL COMMENT '租借状态'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+  `status` int(255) NULL DEFAULT NULL COMMENT '租借状态',
+  PRIMARY KEY (`serialnum`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for users

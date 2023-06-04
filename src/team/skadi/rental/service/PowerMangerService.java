@@ -1,5 +1,6 @@
 package team.skadi.rental.service;
 
+import team.skadi.rental.bean.Power;
 import team.skadi.rental.dao.impl.PowerDaoImp;
 
 public class PowerMangerService {
@@ -7,7 +8,16 @@ public class PowerMangerService {
 	private PowerDaoImp pdi;
 	private static PowerMangerService instance = new PowerMangerService();
 
-	//TODO: 业务逻辑在这这里写（写后记得删除本行）
+	public Power borrow(String id,double left,int status){
+		if (id == null) {
+
+		}else {
+
+		}
+
+
+		return null;
+	}
 	
 	// 单例模式
 	private PowerMangerService() {
