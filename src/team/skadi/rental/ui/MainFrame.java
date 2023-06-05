@@ -3,6 +3,7 @@
  */
 package team.skadi.rental.ui;
 
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -13,15 +14,17 @@ import javax.swing.JFrame;
  */
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
-	
+
 	public static final int FRAME_WIDTH = 1000, FRAME_HEIGHT = 610;
 	public static final int FRAME_MIN_WIDTH, FRAME_MIN_HEIGHT;
+
+	private CardLayout cardLayout;
 
 	static {
 		FRAME_MIN_HEIGHT = (int) (FRAME_HEIGHT * 0.85);
 		FRAME_MIN_WIDTH = (int) (FRAME_WIDTH * 0.85);
 	}
-	
+
 	public MainFrame() {
 		super("德莱联盟电源租凭系统");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -37,10 +40,12 @@ public class MainFrame extends JFrame {
 	}
 
 	private void bulidLayout() {
-		
+		cardLayout = new CardLayout();
+		setLayout(cardLayout);
+		add("login", new LoginPanel(this));
 	}
 
 	private void addListener() {
-		
+
 	}
 }

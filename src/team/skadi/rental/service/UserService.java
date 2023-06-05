@@ -1,5 +1,6 @@
 package team.skadi.rental.service;
 
+import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
 import team.skadi.rental.dao.UserDao;
 import team.skadi.rental.dao.impl.UserDaoImp;
@@ -39,6 +40,26 @@ public class UserService {
 		user.setPhoneNumber(phoneNumber);
 		user.setEmail(email);
 		udi.updateUser(user);
+	}
+
+	/**
+	 * 借充电宝
+	 * 
+	 * @param userLogin 已登录的用户
+	 * @param power     充电宝
+	 */
+	public void borrow(User userLogin, Power power) {
+
+	}
+
+	/**
+	 * 归还充电宝
+	 * 
+	 * @param userLogin 已经登录的用户
+	 * @param power     充电宝
+	 */
+	public void giveBack(User userLogin, Power power) {
+
 	}
 
 	// 单例模式

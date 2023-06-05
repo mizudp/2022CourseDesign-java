@@ -1,12 +1,31 @@
 package team.skadi.rental.dao;
 
+import java.util.List;
+
 import team.skadi.rental.bean.Power;
 
 public interface PowerDao {
+
+	/**
+	 * 根据充电宝的状态获取相应状态的充电宝列表
+	 * 
+	 * @param status 充电宝状态
+	 * @return 充电宝列表
+	 */
+	List<Power> findPowersByStatus(int status);
+
+	/**
+	 * 查找大于大于gtLeft电量的充电宝
+	 * 
+	 * @param gtLeft 剩余电量
+	 * @return 充电宝列表
+	 */
+	List<Power> findPowersByPowerLeft(double gtLeft);
+
 	/**
 	 * 根据指定的id查找充电宝
 	 * 
-	 * @param powerId
+	 * @param powerId 充电宝id
 	 * @return 充电宝*1， null 没有该id的充电宝
 	 */
 	Power findPowerById(String powerId);
@@ -37,4 +56,5 @@ public interface PowerDao {
 	 * @return
 	 */
 	int getSerialnum();
+
 }
