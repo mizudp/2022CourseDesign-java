@@ -5,12 +5,12 @@ public class User {
     private int serialnum;
     private String name;
     private String phoneNumber;
-    private String idcard;
     private String password;
     private double balance;
     private String email;
+    private String credit;
 
-    public String getId() {
+	public String getId() {
         return id;
     }
 
@@ -18,7 +18,7 @@ public class User {
         this.id = id;
     }
 
-    public int getSerialnum() {
+	public int getSerialnum() {
         return serialnum;
     }
 
@@ -40,14 +40,6 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getIdcard() {
-        return idcard;
-    }
-
-    public void setIdcard(String idcard) {
-        this.idcard = idcard;
     }
 
     public String getPassword() {
@@ -74,16 +66,26 @@ public class User {
         this.email = email;
     }
 
-    public User(String id, int serialnum, String name, String phoneNumber, String idcard, String password, double balance, String email) {
-        this.id = id;
-        this.serialnum = serialnum;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.idcard = idcard;
-        this.password = password;
-        this.balance = balance;
-        this.email = email;
-    }
+    public String getCredit() {
+		return credit;
+	}
+
+	public void setCredit(String credit) {
+		this.credit = credit;
+	}
+	
+    public User(String id, int serialnum, String name, String phoneNumber, String password, double balance,
+			String email, String credit) {
+		super();
+		this.id = id;
+		this.serialnum = serialnum;
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.password = password;
+		this.balance = balance;
+		this.email = email;
+		this.credit = credit;
+	}
 
     public User() {
     }
