@@ -3,13 +3,13 @@ package team.skadi.rental.bean;
 public class Power {
 
 	/** 可借 */
-	public static final int AVAILABLE = 2;
+	public static final int AVAILABLE = 1;
 	/** 已借出 */
-	public static final int BOOROWED = 4;
+	public static final int BOOROWED = 2;
 	/** 能源不足 */
-	public static final int NO_POWER = 8;
+	public static final int NO_POWER = 4;
 	/** 已损坏 */
-	public static final int BROKEN = 16;
+	public static final int BROKEN = 8;
 	/** 该充电宝为空 */
 	public static final int NULL = 0;
 

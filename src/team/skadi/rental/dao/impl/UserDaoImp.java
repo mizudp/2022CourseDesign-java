@@ -17,7 +17,7 @@ public class UserDaoImp implements UserDao {
 		if (userId == null) {
 			return null;
 		}
-		String sql = "select * from user WHERE id=?;";
+		String sql = "select * from users WHERE id=?;";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		User user = new User();
@@ -27,6 +27,7 @@ public class UserDaoImp implements UserDao {
 			rs = stat.executeQuery();// 执行SQL语句
 			while (rs.next()) {
 				user.setId(rs.getString("id"));
+				user.setSerialnum(rs.getInt("serialnum"));
 				user.setName(rs.getString("name"));
 				user.setPhoneNumber(rs.getString("phoneNumber"));
 				user.setPassword(rs.getString("password"));
@@ -49,17 +50,19 @@ public class UserDaoImp implements UserDao {
 	@Override
 	public void updateUser(User user) {
 		Connection connection = DBUtil.getConnection();
-		String sql = "UPDATE user SET name=?,phoneNumber=?,password=?,balance=?,email=?,credit=? WHERE id=?;";
+		String sql = "UPDATE users SET serialnum=?,name=?,phoneNumber=?,password=?,balance=?,email=?,credit=? WHERE id=?;";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
 			stat = connection.prepareStatement(sql);
-			stat.setString(1, user.getName());
-			stat.setString(2, user.getPhoneNumber());
-			stat.setString(3, user.getPassword());
-			stat.setDouble(4, user.getBalance());
-			stat.setString(5, user.getEmail());
-			stat.setInt(6, user.getCredit());
+			stat.setInt(1, user.getSerialnum());
+			stat.setString(2, user.getName());
+			stat.setString(3, user.getPhoneNumber());
+			stat.setString(4, user.getPassword());
+			stat.setDouble(5, user.getBalance());
+			stat.setString(6, user.getEmail());
+			stat.setInt(7, user.getCredit());
+			stat.setString(8, user.getId());
 			stat.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -71,7 +74,7 @@ public class UserDaoImp implements UserDao {
 	@Override
 	public void createNewUser() {
 		Connection connection = DBUtil.getConnection();
-		String sql = "INSERT user (id,name,phoneNumber,password,balance,email) VALUE (null,null,null,null,null,null);";
+		String sql = "INSERT users (id,name,phoneNumber,password,balance,email) VALUE (null,null,null,null,null,null);";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
@@ -87,7 +90,7 @@ public class UserDaoImp implements UserDao {
 	@Override
 	public void addNewUser(String userId, int serialnum) {
 		Connection connection = DBUtil.getConnection();
-		String sql = "UPDATE user SET id=? WHERE serialnum=?";
+		String sql = "UPDATE users SET id=? WHERE serialnum=?";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
@@ -100,7 +103,6 @@ public class UserDaoImp implements UserDao {
 		} finally {
 			DBUtil.closeAll(connection, stat, rs);
 		}
-
 	}
 
 	@Override
