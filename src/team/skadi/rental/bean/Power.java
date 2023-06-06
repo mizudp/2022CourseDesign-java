@@ -1,54 +1,73 @@
 package team.skadi.rental.bean;
 
 public class Power {
-    /** 电源id*/
-    private String id;
-    /**电源序列号*/
-    private int serialnum;
-    /**剩余电量*/
-    private double left;
-    /**租借状态*/
-    private int status;
 
-    public String getId() {
-        return id;
-    }
+	/** 可借 */
+	public static final int AVAILABLE = 2;
+	/** 已借出 */
+	public static final int BOOROWED = 4;
+	/** 能源不足 */
+	public static final int NO_POWER = 8;
+	/** 已损坏 */
+	public static final int BROKEN = 16;
+	/** 该充电宝为空 */
+	public static final int NULL = 0;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	/** 电源id */
+	private String id;
+	/** 电源序列号 */
+	private int serialnum;
+	/** 剩余电量 */
+	private double left;
+	/** 租借状态 */
+	private int status;
 
-    public int getSerialnum() {
-        return serialnum;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setSerialnum(int serialnum) {
-        this.serialnum = serialnum;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public double getLeft() {
-        return left;
-    }
+	public int getSerialnum() {
+		return serialnum;
+	}
 
-    public void setLeft(double left) {
-        this.left = left;
-    }
+	public void setSerialnum(int serialnum) {
+		this.serialnum = serialnum;
+	}
 
-    public int getStatus() {
-        return status;
-    }
+	public double getLeft() {
+		return left;
+	}
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+	public void setLeft(double left) {
+		this.left = left;
+	}
 
-    public Power(String id, int serialnum, double left, int status) {
-        this.id = id;
-        this.serialnum = serialnum;
-        this.left = left;
-        this.status = status;
-    }
+	public int getStatus() {
+		return status;
+	}
 
-    public Power() {
-    }
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public void reset() {
+		id = "";
+		serialnum = 0;
+		left = 0;
+		status = 0;
+	}
+
+	public Power(String id, int serialnum, double left, int status) {
+		this.id = id;
+		this.serialnum = serialnum;
+		this.left = left;
+		this.status = status;
+	}
+
+	public Power() {
+	}
 }

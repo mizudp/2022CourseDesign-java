@@ -11,8 +11,8 @@ import team.skadi.rental.ui.MainFrame;
 
 public class Main {
 	
-	public static final Font DEFAILT_FONT = new Font("微软雅黑", Font.PLAIN, 14);
-	public static final Font TITLE_FONT = new Font("微软雅黑", Font.PLAIN, 26);
+	public static final Font DEFAILT_FONT = new Font("微软雅黑", Font.PLAIN, 18);
+	public static final Font TITLE_FONT = new Font("微软雅黑", Font.PLAIN, 30);
 	
 	public static void main(String[] args) {
 //		设置全局字体

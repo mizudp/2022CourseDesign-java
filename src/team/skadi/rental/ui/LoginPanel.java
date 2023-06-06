@@ -56,7 +56,7 @@ public class LoginPanel extends JPanel {
 		gbc.gridy++;
 		gbc.gridwidth = 2;
 		gbc.insets.bottom = 0;
-		JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 25, 0));
+		JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
 		JButton loginBtn = new JButton("登录");
 		btnPanel.add(loginBtn);
 		JButton signUpBtn = new JButton("注册");

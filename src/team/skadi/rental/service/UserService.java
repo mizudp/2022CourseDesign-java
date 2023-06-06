@@ -2,7 +2,6 @@ package team.skadi.rental.service;
 
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
-import team.skadi.rental.dao.UserDao;
 import team.skadi.rental.dao.impl.UserDaoImp;
 
 public class UserService {
