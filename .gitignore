@@ -1,17 +1,23 @@
-/bin/
+# idea
 /.idea/
 /.ideaSetting/
 /.settings/
-/log/
 /target/
 /out/
 /src/team/skadi/rental/service/.idea/
+*.iml
+*.iws
 
-
+# eclipse
+/bin/
 .classpath
 .project
 
+# file
+/log/
 *.log
 *.class
-*.iml
-*.iws
+
+# config
+*.cfg
+*.properties
