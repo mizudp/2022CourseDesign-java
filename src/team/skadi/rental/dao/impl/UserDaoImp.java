@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import team.skadi.rental.bean.User;
 import team.skadi.rental.dao.UserDao;
@@ -69,6 +70,18 @@ public class UserDaoImp implements UserDao {
 		} finally {
 			DBUtil.closeAll(connection, stat, rs);
 		}
+	}
+
+	@Override
+	public List<User> getAllUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getUsersByBalance(double balance) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

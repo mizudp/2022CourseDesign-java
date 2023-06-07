@@ -1,5 +1,7 @@
 package team.skadi.rental.dao;
 
+import java.util.List;
+
 import team.skadi.rental.bean.User;
 
 public interface UserDao {
@@ -17,6 +19,21 @@ public interface UserDao {
 	 * @param user 需要更新的用户对象
 	 */
 	void updateUser(User user);
+
+	/**
+	 * 获得所有的用户
+	 * 
+	 * @return 用户列表
+	 */
+	List<User> getAllUser();
+
+	/**
+	 * 通过账户余额来获得用户列表
+	 * 
+	 * @param balance 账户余额
+	 * @return 小于指定余额的用户列表
+	 */
+	List<User> getUsersByBalance(double balance);
 
 	/**
 	 * 创建新用户（空账户）
