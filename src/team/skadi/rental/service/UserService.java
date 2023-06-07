@@ -1,5 +1,7 @@
 package team.skadi.rental.service;
 
+import java.util.List;
+
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
 import team.skadi.rental.dao.impl.UserDaoImp;
@@ -7,9 +9,18 @@ import team.skadi.rental.dao.impl.UserDaoImp;
 public class UserService {
 
 	private UserDaoImp udi;
-	private static UserService instance = new UserService();
+	private static final UserService instance = new UserService();
 
-	public User logIn(String userName, String userPassword, String userPhoneNumber, double balance, String userEmail) {
+	/**
+	 * 用户注册
+	 * 
+	 * @param userName        用户名
+	 * @param userPassword    密码
+	 * @param userPhoneNumber 电话号码
+	 * @param userEmail       用户邮箱
+	 * @return 完成注册后的用户实例*1
+	 */
+	public User signIn(String userName, String userPassword, String userPhoneNumber, String userEmail) {
 		User user = new User();
 		udi.createNewUser();
 		int serialnum = udi.getSerialnum();
@@ -19,14 +30,22 @@ public class UserService {
 		user.setName(userName);
 		user.setPassword(userPassword);
 		user.setPhoneNumber(userPhoneNumber);
-		user.setBalance(balance);
+		user.setBalance(0);
 		user.setEmail(userEmail);
+		user.setCredit(100);
 		udi.updateUser(user);
 		LogsService.addLogs(user, "注册完成");
 		return user;
 	}
 
-	public User signIn(String id, String userPassword) {
+	/**
+	 * 用户登录
+	 * 
+	 * @param id           用户账户
+	 * @param userPassword 用户密码
+	 * @return
+	 */
+	public User login(String id, String userPassword) {
 		User user = udi.findUserById(id);
 		if (user != null && user.getPassword().equals(userPassword)) {
 			return user;
@@ -35,7 +54,16 @@ public class UserService {
 		}
 	}
 
-	public void modify(User user, String phoneNumber, String email) {
+	/**
+	 * 修改用户信息
+	 * 
+	 * @param user        需要修改的用户
+	 * @param name        修改后的用户名
+	 * @param phoneNumber 修改后的电话号码
+	 * @param email       修改后的邮箱
+	 */
+	public void modify(User user, String name, String phoneNumber, String email) {
+		user.setName(name);
 		user.setPhoneNumber(phoneNumber);
 		user.setEmail(email);
 		udi.updateUser(user);
@@ -59,6 +87,24 @@ public class UserService {
 	 */
 	public void giveBack(User userLogin, Power power) {
 
+	}
+
+	/**
+	 * 移除指定的用户
+	 * 
+	 * @param user 要移除的用户
+	 */
+	protected void removeUser(User user) {
+
+	}
+
+	/**
+	 * 获得所有用户
+	 * 
+	 * @return 用户列表
+	 */
+	protected List<User> getAllUser() {
+		return null;
 	}
 
 	// 单例模式

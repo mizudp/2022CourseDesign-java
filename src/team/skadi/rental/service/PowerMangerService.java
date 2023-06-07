@@ -8,14 +8,14 @@ import team.skadi.rental.dao.impl.PowerDaoImp;
 public class PowerMangerService {
 
 	private PowerDaoImp pdi;
-	private static PowerMangerService instance = new PowerMangerService();
+	private static final PowerMangerService instance = new PowerMangerService();
 
 	/**
 	 * 移除指定的充电宝
 	 * 
 	 * @param power 要移除的充电宝
 	 */
-	public void remove(Power power) {
+	protected void remove(Power power) {
 
 	}
 
@@ -24,7 +24,16 @@ public class PowerMangerService {
 	 * 
 	 * @param power 要添加的充电宝
 	 */
-	public void add(Power power) {
+	protected void add(Power power) {
+
+	}
+
+	/**
+	 * 修改指定的充电宝
+	 * 
+	 * @param power 要修改的充电宝
+	 */
+	protected void modifyPower(Power power) {
 
 	}
 
@@ -34,7 +43,7 @@ public class PowerMangerService {
 	 * @param status 充电宝状态
 	 * @return 满足条件的充电宝
 	 */
-	public List<Power> getPowers(int status) {
+	public List<Power> getPowersByStatus(int status) {
 		return null;
 	}
 
@@ -44,7 +53,7 @@ public class PowerMangerService {
 	 * @param left 剩余电量
 	 * @return 满足条件的充电宝
 	 */
-	public List<Power> getPowers(double left) {
+	public List<Power> getPowersByPowerLeft(double left) {
 		return null;
 	}
 
