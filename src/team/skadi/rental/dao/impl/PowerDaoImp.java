@@ -62,17 +62,12 @@ public class PowerDaoImp implements PowerDao {
 		String sql = "select * from powers WHERE id=?;";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
-		Power power = new Power();
+		Power power = null;
 		try {
 			stat = connection.prepareStatement(sql);
 			stat.setString(1, powerId);
 			rs = stat.executeQuery();// 执行SQL语句
-			while (rs.next()) {
-				power.setId(rs.getString("id"));
-				power.setSerialnum(rs.getInt("serialnum"));
-				power.setLeft(rs.getDouble("left"));
-				power.setStatus(rs.getInt("status"));
-			}
+			power = getlist(rs).get(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
