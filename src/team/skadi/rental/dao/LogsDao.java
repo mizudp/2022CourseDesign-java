@@ -17,20 +17,28 @@ public interface LogsDao {
 	void addLog(User user, Power power, String content);
 
 	/**
-	 * 归还充电宝时，记录结束时间，并返回租借时长(h)
+	 * 归还充电宝时，记录结束时间
 	 * 
-	 * @param user  已登录的用户
+	 * @param user  用户
 	 * @param power 需要归还的充电宝
-	 * @return 租界时长，单位小时
 	 */
-	int getTime(User user, Power power);
+	void finishLog(Logs log);
+
+	/**
+	 * 获得指定用户和指定充电宝并且没有结束时间的记录
+	 * 
+	 * @param user  用户
+	 * @param power 充电宝
+	 * @return 开始时间(start Time)
+	 */
+	Logs getLog(User user, Power power);
 
 	/**
 	 * 根据指定的用户id获取所有记录
 	 * 
-	 * @param userId 用户id
+	 * @param user 用户
 	 * @return 用户记录列表
 	 */
-	List<Logs> queryLogs(String userId);
+	List<Logs> queryLogs(User user);
 
 }
