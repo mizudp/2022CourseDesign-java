@@ -70,7 +70,7 @@ public class LogsDaoImp implements LogsDao {
 			while (rs.next()) {
 				log.setUserId(rs.getString("userID"));
 				log.setPowerId(rs.getString("powerId"));
-				log.setStartDate(rs.getString("startDate"));
+				log.setStartDate(rs.getLong("startDate"));
 				log.setContext(rs.getString("context"));
 			}
 		} catch (SQLException e) {
@@ -96,7 +96,7 @@ public class LogsDaoImp implements LogsDao {
 				Logs logs2 = new Logs();
 				logs2.setUserId(rs.getString("userID"));
 				logs2.setPowerId(rs.getString("powerId"));
-				logs2.setStartDate(rs.getString("startDate"));
+				logs2.setStartDate(rs.getLong("startDate"));
 				logs2.setContext(rs.getString("context"));
 				logs.add(logs2);
 			}

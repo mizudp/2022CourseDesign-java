@@ -2,61 +2,62 @@ package team.skadi.rental.bean;
 
 public class Logs {
 
-    private String userId;
-    private String powerId;
-    private String startDate;
-    private String endDate;
-    /**租借日志内容*/
-    private String context;
+	private String userId;
+	private String powerId;
+	private long startDate;
+	private long endDate;
+	/** 租借日志内容 */
+	private String context;
 
-    public String getUserId() {
-        return userId;
-    }
+	public Logs(String userId, String powerId, long startDate, long endDate, String context) {
+		super();
+		this.userId = userId;
+		this.powerId = powerId;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.context = context;
+	}
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	public long getStartDate() {
+		return startDate;
+	}
 
-    public String getPowerId() {
-        return powerId;
-    }
+	public void setStartDate(long startDate) {
+		this.startDate = startDate;
+	}
 
-    public void setPowerId(String powerId) {
-        this.powerId = powerId;
-    }
+	public long getEndDate() {
+		return endDate;
+	}
 
-    public String getStartDate() {
-        return startDate;
-    }
+	public void setEndDate(long endDate) {
+		this.endDate = endDate;
+	}
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    public String getEndDate() {
-        return endDate;
-    }
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
+	public String getPowerId() {
+		return powerId;
+	}
 
-    public String getContext() {
-        return context;
-    }
+	public void setPowerId(String powerId) {
+		this.powerId = powerId;
+	}
 
-    public void setContext(String context) {
-        this.context = context;
-    }
+	public String getContext() {
+		return context;
+	}
 
-    public Logs(String userId, String powerId, String startDate, String endDate, String context) {
-        this.userId = userId;
-        this.powerId = powerId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.context = context;
-    }
+	public void setContext(String context) {
+		this.context = context;
+	}
 
-    public Logs() {
-    }
+	public Logs() {
+	}
 }
