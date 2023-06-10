@@ -5,7 +5,7 @@ public class Power {
 	/** 可借 */
 	public static final int AVAILABLE = 1;
 	/** 已借出 */
-	public static final int BOOROWED = 2;
+	public static final int BORROWED = 2;
 	/** 能源不足 */
 	public static final int NO_POWER = 4;
 	/** 已损坏 */
