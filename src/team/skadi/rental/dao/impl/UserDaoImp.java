@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import team.skadi.rental.bean.User;
@@ -21,21 +22,12 @@ public class UserDaoImp implements UserDao {
 		String sql = "select * from users WHERE id=?;";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
-		User user = new User();
+		User user = null;
 		try {
 			stat = connection.prepareStatement(sql);
 			stat.setString(1, userId);
 			rs = stat.executeQuery();// 执行SQL语句
-			while (rs.next()) {
-				user.setId(rs.getString("id"));
-				user.setSerialnum(rs.getInt("serialnum"));
-				user.setName(rs.getString("name"));
-				user.setPhoneNumber(rs.getString("phoneNumber"));
-				user.setPassword(rs.getString("password"));
-				user.setBalance(rs.getDouble("balance"));
-				user.setEmail(rs.getString("email"));
-				user.setCredit(rs.getInt("credit"));
-			}
+			user = getlist(rs).get(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -74,14 +66,41 @@ public class UserDaoImp implements UserDao {
 
 	@Override
 	public List<User> getAllUser() {
-		// TODO Auto-generated method stub
-		return null;
+		Connection connection = DBUtil.getConnection();
+		String sql = "SELECT * FROM users;";
+		PreparedStatement stat = null;
+		ResultSet rs = null;
+		List<User> users = null;
+		try {
+			stat = connection.prepareStatement(sql);
+			rs = stat.executeQuery();
+			users = getlist(rs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.closeAll(connection, stat, rs);
+		}
+		return users;
 	}
 
 	@Override
 	public List<User> getUsersByBalance(double balance) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection connection = DBUtil.getConnection();
+		String sql = "SELECT * FROM users WHERE balance<?;";
+		PreparedStatement stat = null;
+		ResultSet rs = null;
+		List<User> users = null;
+		try {
+			stat = connection.prepareStatement(sql);
+			stat.setDouble(1, balance);
+			rs = stat.executeQuery();
+			users = getlist(rs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.closeAll(connection, stat, rs);
+		}
+		return users;
 	}
 
 	@Override
@@ -137,4 +156,20 @@ public class UserDaoImp implements UserDao {
 		return serialnum;
 	}
 
+	private List<User> getlist(ResultSet rs) throws SQLException {
+		ArrayList<User> users = new ArrayList<>();
+		while (rs.next()) {
+			User user = new User();
+			user.setId(rs.getString("id"));
+			user.setSerialnum(rs.getInt("serialnum"));
+			user.setName(rs.getString("name"));
+			user.setPhoneNumber(rs.getString("phoneNumber"));
+			user.setPassword(rs.getString("password"));
+			user.setBalance(rs.getDouble("balance"));
+			user.setEmail(rs.getString("email"));
+			user.setCredit(rs.getInt("credit"));
+			users.add(user);
+		}
+		return users;
+	}
 }
