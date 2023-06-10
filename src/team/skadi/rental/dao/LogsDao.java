@@ -29,7 +29,7 @@ public interface LogsDao {
 	 * 
 	 * @param user  用户
 	 * @param power 充电宝
-	 * @return 开始时间(start Time)
+	 * @return 日志*1。null；没有
 	 */
 	Logs getLog(User user, Power power);
 

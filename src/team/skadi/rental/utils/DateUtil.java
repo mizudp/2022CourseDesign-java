@@ -15,4 +15,12 @@ public class DateUtil {
 	public static String getDateNow() {
 		return sdf.format(new Date());
 	}
+
+	/**
+	 * @param millisec 1970年1月1日起的毫秒数
+	 * @return 以yyyy-MM-dd hh:mm:ss显示的时间
+	 */
+	public static String format(long millisec) {
+		return sdf.format(new Date(millisec));
+	}
 }

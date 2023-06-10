@@ -34,7 +34,6 @@ public class UserService {
 		user.setEmail(userEmail);
 		user.setCredit(100);
 		udi.updateUser(user);
-		LogsService.addLogs(user, "注册完成");
 		return user;
 	}
 

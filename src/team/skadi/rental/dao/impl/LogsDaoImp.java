@@ -12,7 +12,6 @@ import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
 import team.skadi.rental.dao.LogsDao;
 import team.skadi.rental.utils.DBUtil;
-import team.skadi.rental.utils.DateUtil;
 
 public class LogsDaoImp implements LogsDao {
 
@@ -26,7 +25,7 @@ public class LogsDaoImp implements LogsDao {
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, user.getId());
 			statement.setString(2, power.getId());
-			statement.setString(3, DateUtil.getDateNow());
+			statement.setLong(3, System.currentTimeMillis());
 			statement.setString(4, content);
 			statement.executeUpdate();
 		} catch (SQLException e) {
@@ -41,12 +40,13 @@ public class LogsDaoImp implements LogsDao {
 		Connection connection = DBUtil.getConnection();
 		PreparedStatement statement = null;
 		ResultSet rs = null;
-		String sql = "UPDATE logs SET endDate=? WHERE userId=? AND powerId=? AND endDate IS NULL;";
+		String sql = "UPDATE logs SET endDate=?,context=? WHERE userId=? AND powerId=? AND endDate IS NULL;";
 		try {
 			statement = connection.prepareStatement(sql);
-			statement.setString(1, DateUtil.getDateNow());
-			statement.setString(2, log.getUserId());
-			statement.setString(3, log.getPowerId());
+			statement.setLong(1, log.getEndDate());
+			statement.setString(2, log.getContext());
+			statement.setString(3, log.getUserId());
+			statement.setString(4, log.getPowerId());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -61,13 +61,14 @@ public class LogsDaoImp implements LogsDao {
 		PreparedStatement statement = null;
 		ResultSet rs = null;
 		String sql = "SELECT * from logs WHERE userId=? AND powerId=? AND endDate IS NULL;";
-		Logs log = new Logs();
+		Logs log = null;
 		try {
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, user.getId());
 			statement.setString(2, power.getId());
 			rs = statement.executeQuery();
 			while (rs.next()) {
+				log = new Logs();
 				log.setUserId(rs.getString("userID"));
 				log.setPowerId(rs.getString("powerId"));
 				log.setStartDate(rs.getLong("startDate"));
@@ -93,12 +94,12 @@ public class LogsDaoImp implements LogsDao {
 			statement.setString(1, user.getId());
 			rs = statement.executeQuery();
 			while (rs.next()) {
-				Logs logs2 = new Logs();
-				logs2.setUserId(rs.getString("userID"));
-				logs2.setPowerId(rs.getString("powerId"));
-				logs2.setStartDate(rs.getLong("startDate"));
-				logs2.setContext(rs.getString("context"));
-				logs.add(logs2);
+				Logs log = new Logs();
+				log.setUserId(rs.getString("userID"));
+				log.setPowerId(rs.getString("powerId"));
+				log.setStartDate(rs.getLong("startDate"));
+				log.setContext(rs.getString("context"));
+				logs.add(log);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
