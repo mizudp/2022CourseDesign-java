@@ -16,16 +16,22 @@ public class PowerMangerService {
 	 * @param power 要移除的充电宝
 	 */
 	protected void remove(Power power) {
-
+		power.reset();
+		pdi.updatePower(power);
 	}
 
 	/**
 	 * 添加指定的充电宝
 	 * 
-	 * @param power 要添加的充电宝
+	 * @param left 电量
+	 * @return 添加的充电宝
 	 */
-	protected void add(Power power) {
-
+	protected Power add(double left) {
+		pdi.createNewPower();
+		int serialnum = pdi.getSerialnum();
+		String powerId = String.format("%06d", serialnum);
+		pdi.addNewPower(powerId, serialnum);
+		return new Power(powerId, serialnum, left, Power.AVAILABLE);
 	}
 
 	/**
@@ -34,7 +40,7 @@ public class PowerMangerService {
 	 * @param power 要修改的充电宝
 	 */
 	protected void modifyPower(Power power) {
-
+		pdi.updatePower(power);
 	}
 
 	/**
@@ -44,7 +50,7 @@ public class PowerMangerService {
 	 * @return 满足条件的充电宝
 	 */
 	public List<Power> getPowersByStatus(int status) {
-		return null;
+		return pdi.findPowersByStatus(status);
 	}
 
 	/**
@@ -54,7 +60,7 @@ public class PowerMangerService {
 	 * @return 满足条件的充电宝
 	 */
 	public List<Power> getPowersByPowerLeft(double left) {
-		return null;
+		return pdi.findPowersByPowerLeft(left);
 	}
 
 	// 单例模式

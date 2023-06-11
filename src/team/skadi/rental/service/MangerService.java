@@ -20,7 +20,12 @@ public class MangerService {
 	 * @return 管理员*1, null: 工号或密码错误
 	 */
 	public Manger login(String id, String password) {
-		return null;
+		Manger manger = mdi.findMangerById(id);
+		if (manger!=null&&manger.getPassword().equals(password)) {
+			return manger;
+		} else {			
+			return null;
+		}
 	}
 
 	/**
@@ -29,7 +34,7 @@ public class MangerService {
 	 * @param manger 要登出的管理员
 	 */
 	public void signOut(Manger manger) {
-
+		manger = null;
 	}
 
 	/**
@@ -38,16 +43,16 @@ public class MangerService {
 	 * @param user 要移除的用户
 	 */
 	public void removeUser(User user) {
-
+		UserService.getInstance().removeUser(user);
 	}
 
 	/**
 	 * 添加指定状态的充电宝
-	 * 
-	 * @param power 需要添加的充电宝
+	 * @param left 剩余电量
+	 * @return 指定电量充电宝
 	 */
-	public void addPower(Power power) {
-
+	public Power addPower(double left) {
+		return PowerMangerService.getInstance().add(left);
 	}
 
 	/**
@@ -56,7 +61,7 @@ public class MangerService {
 	 * @param power 需要修改的充电宝
 	 */
 	public void modifyPower(Power power) {
-
+		PowerMangerService.getInstance().modifyPower(power);
 	}
 
 	/**
@@ -65,7 +70,7 @@ public class MangerService {
 	 * @param power 要移除的充电宝
 	 */
 	public void removePower(Power power) {
-
+		PowerMangerService.getInstance().remove(power);
 	}
 
 	/**
@@ -74,7 +79,7 @@ public class MangerService {
 	 * @return 用户列表
 	 */
 	public List<User> getUserList() {
-		return null;
+		return UserService.getInstance().getAllUser();
 	}
 
 	public static MangerService getInstance() {

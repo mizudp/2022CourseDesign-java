@@ -58,7 +58,7 @@ public class Power {
 		id = "";
 		serialnum = 0;
 		left = 0;
-		status = 0;
+		status = NULL;
 	}
 
 	public Power(String id, int serialnum, double left, int status) {

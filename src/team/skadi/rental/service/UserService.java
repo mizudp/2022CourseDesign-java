@@ -2,6 +2,7 @@ package team.skadi.rental.service;
 
 import java.util.List;
 
+import team.skadi.rental.bean.Logs;
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
 import team.skadi.rental.dao.impl.UserDaoImp;
@@ -73,9 +74,16 @@ public class UserService {
 	 * 
 	 * @param userLogin 已登录的用户
 	 * @param power     充电宝
+	 * @return false: 已经借了充电宝，true: 成功借入
 	 */
-	public void borrow(User userLogin, Power power) {
-
+	public boolean borrow(User userLogin, Power power) {
+		Logs log = LogsService.getLog(userLogin, power);
+		if (log == null) {
+			LogsService.addBorrowLog(userLogin, power);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -85,7 +93,10 @@ public class UserService {
 	 * @param power     充电宝
 	 */
 	public void giveBack(User userLogin, Power power) {
-
+		Logs log = LogsService.getLog(userLogin, power);
+		if (log!=null) {
+			LogsService.addReturnLog(log);
+		}
 	}
 
 	/**
@@ -94,7 +105,8 @@ public class UserService {
 	 * @param user 要移除的用户
 	 */
 	protected void removeUser(User user) {
-
+		user.setId("");
+		udi.updateUser(user);
 	}
 
 	/**
@@ -103,7 +115,7 @@ public class UserService {
 	 * @return 用户列表
 	 */
 	protected List<User> getAllUser() {
-		return null;
+		return udi.getAllUser();
 	}
 
 	// 单例模式

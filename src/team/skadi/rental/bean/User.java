@@ -87,6 +87,16 @@ public class User {
 		this.credit = credit;
 	}
 
+	public void del() {
+		id = "";
+		name = "";
+		phoneNumber = "";
+		password = "";
+		balance = 0;
+		email = "";
+		credit = 0;
+	}
+
 	public User() {
 	}
 }

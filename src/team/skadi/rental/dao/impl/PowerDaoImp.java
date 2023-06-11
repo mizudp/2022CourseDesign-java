@@ -117,15 +117,15 @@ public class PowerDaoImp implements PowerDao {
 	@Override
 	public void updatePower(Power power) {
 		Connection connection = DBUtil.getConnection();
-		String sql = "UPDATE powers SET serialnum=?,left=?,status=? WHERE id=?;";
+		String sql = "UPDATE powers SET id=?,left=?,status=? WHERE serialnum=?;";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
 			stat = connection.prepareStatement(sql);
-			stat.setInt(1, power.getSerialnum());
+			stat.setString(1, power.getId());
 			stat.setDouble(2, power.getLeft());
 			stat.setInt(3, power.getStatus());
-			stat.setString(4, power.getId());
+			stat.setInt(4, power.getSerialnum());
 			stat.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
