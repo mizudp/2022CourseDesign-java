@@ -21,3 +21,6 @@
 # config
 *.cfg
 *.properties
+
+# test files
+/src/test/
