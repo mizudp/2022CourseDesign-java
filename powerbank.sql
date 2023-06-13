@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost_3307
+ Source Server         : mysql57
  Source Server Type    : MySQL
  Source Server Version : 50703
- Source Host           : localhost:3307
+ Source Host           : localhost:3306
  Source Schema         : powerbank
 
  Target Server Type    : MySQL
  Target Server Version : 50703
  File Encoding         : 65001
 
- Date: 11/06/2023 01:44:12
+ Date: 13/06/2023 12:36:19
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +27,7 @@ CREATE TABLE `logs`  (
   `startDate` bigint(20) NULL DEFAULT NULL COMMENT '开始日期',
   `endDate` bigint(20) NULL DEFAULT NULL COMMENT '归还时间',
   `context` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内容'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for mangers
@@ -37,7 +37,7 @@ CREATE TABLE `mangers`  (
   `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for powers
@@ -46,10 +46,10 @@ DROP TABLE IF EXISTS `powers`;
 CREATE TABLE `powers`  (
   `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电源id',
   `serialnum` int(255) NOT NULL AUTO_INCREMENT COMMENT '电源序列号',
-  `left` double(255, 0) NULL DEFAULT NULL COMMENT '剩余电量',
+  `left` int(5) NULL DEFAULT NULL COMMENT '剩余电量',
   `status` int(255) NULL DEFAULT NULL COMMENT '租借状态',
   PRIMARY KEY (`serialnum`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for users
@@ -65,6 +65,6 @@ CREATE TABLE `users`  (
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
   `credit` int(255) NOT NULL DEFAULT 100 COMMENT '信用点',
   PRIMARY KEY (`serialnum`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 SET FOREIGN_KEY_CHECKS = 1;

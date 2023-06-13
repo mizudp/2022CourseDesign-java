@@ -5,14 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import team.skadi.rental.bean.Manger;
-import team.skadi.rental.dao.MangerDao;
+import team.skadi.rental.bean.Manager;
+import team.skadi.rental.dao.ManagerDao;
 import team.skadi.rental.utils.DBUtil;
 
-public class MangerDaoImp implements MangerDao {
+public class ManagerDaoImp implements ManagerDao {
 
 	@Override
-	public Manger findMangerById(String id) {
+	public Manager findMangerById(String id) {
 		Connection connection = DBUtil.getConnection();
 		if (id == null) {
 			return null;
@@ -20,13 +20,14 @@ public class MangerDaoImp implements MangerDao {
 		String sql = "select * from mangers WHERE id=?;";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
-		Manger manger = new Manger();
+		Manager manger = new Manager();
 		try {
 			stat = connection.prepareStatement(sql);
 			stat.setString(1, id);
 			rs = stat.executeQuery();
 			while (rs.next()) {
 				manger.setId(rs.getString("id"));
+				manger.setName(rs.getString("name"));
 				manger.setPassword(rs.getString("password"));
 			}
 		} catch (SQLException e) {

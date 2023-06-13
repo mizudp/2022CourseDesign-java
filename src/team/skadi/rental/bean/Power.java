@@ -18,7 +18,7 @@ public class Power {
 	/** 电源序列号 */
 	private int serialnum;
 	/** 剩余电量 */
-	private double left;
+	private int left;
 	/** 租借状态 */
 	private int status;
 
@@ -38,11 +38,11 @@ public class Power {
 		this.serialnum = serialnum;
 	}
 
-	public double getLeft() {
+	public int getLeft() {
 		return left;
 	}
 
-	public void setLeft(double left) {
+	public void setLeft(int left) {
 		this.left = left;
 	}
 
@@ -55,13 +55,12 @@ public class Power {
 	}
 
 	public void reset() {
-		id = "";
-		serialnum = 0;
+		id = null;
 		left = 0;
 		status = NULL;
 	}
 
-	public Power(String id, int serialnum, double left, int status) {
+	public Power(String id, int serialnum, int left, int status) {
 		this.id = id;
 		this.serialnum = serialnum;
 		this.left = left;

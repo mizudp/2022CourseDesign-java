@@ -1,6 +1,6 @@
 package team.skadi.rental.bean;
 
-public class Logs {
+public class Log {
 
 	private String userId;
 	private String powerId;
@@ -9,7 +9,7 @@ public class Logs {
 	/** 租借日志内容 */
 	private String context;
 
-	public Logs(String userId, String powerId, long startDate, long endDate, String context) {
+	public Log(String userId, String powerId, long startDate, long endDate, String context) {
 		super();
 		this.userId = userId;
 		this.powerId = powerId;
@@ -58,6 +58,6 @@ public class Logs {
 		this.context = context;
 	}
 
-	public Logs() {
+	public Log() {
 	}
 }

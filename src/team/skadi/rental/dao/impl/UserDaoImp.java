@@ -27,23 +27,26 @@ public class UserDaoImp implements UserDao {
 			stat = connection.prepareStatement(sql);
 			stat.setString(1, userId);
 			rs = stat.executeQuery();// 执行SQL语句
-			user = getlist(rs).get(0);
+			List<User> users = getlist(rs);
+			if (users.size() > 0) {
+				user = users.get(0);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBUtil.closeAll(connection, stat, rs);
 		}
-		if (user.getId() == null) {
-			return null;
-		} else {
+		if (user != null && user.getId() != null) {
 			return user;
+		} else {
+			return null;
 		}
 	}
 
 	@Override
 	public void updateUser(User user) {
 		Connection connection = DBUtil.getConnection();
-		String sql = "UPDATE users SET id=?name=?,phoneNumber=?,password=?,balance=?,email=?,credit=? WHERE serialnum=?;";
+		String sql = "UPDATE users SET id=?,name=?,phoneNumber=?,password=?,balance=?,email=?,credit=? WHERE serialnum=?;";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {

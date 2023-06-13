@@ -7,13 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import team.skadi.rental.bean.Logs;
+import team.skadi.rental.bean.Log;
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
-import team.skadi.rental.dao.LogsDao;
+import team.skadi.rental.dao.LogDao;
 import team.skadi.rental.utils.DBUtil;
 
-public class LogsDaoImp implements LogsDao {
+public class LogDaoImp implements LogDao {
 
 	@Override
 	public void addLog(User user, Power power, String content) {
@@ -36,7 +36,7 @@ public class LogsDaoImp implements LogsDao {
 	}
 
 	@Override
-	public void finishLog(Logs log) {
+	public void finishLog(Log log) {
 		Connection connection = DBUtil.getConnection();
 		PreparedStatement statement = null;
 		ResultSet rs = null;
@@ -56,19 +56,19 @@ public class LogsDaoImp implements LogsDao {
 	}
 
 	@Override
-	public Logs getLog(User user, Power power) {
+	public Log getLog(User user, Power power) {
 		Connection connection = DBUtil.getConnection();
 		PreparedStatement statement = null;
 		ResultSet rs = null;
 		String sql = "SELECT * from logs WHERE userId=? AND powerId=? AND endDate IS NULL;";
-		Logs log = null;
+		Log log = null;
 		try {
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, user.getId());
 			statement.setString(2, power.getId());
 			rs = statement.executeQuery();
 			while (rs.next()) {
-				log = new Logs();
+				log = new Log();
 				log.setUserId(rs.getString("userID"));
 				log.setPowerId(rs.getString("powerId"));
 				log.setStartDate(rs.getLong("startDate"));
@@ -83,18 +83,18 @@ public class LogsDaoImp implements LogsDao {
 	}
 
 	@Override
-	public List<Logs> queryLogs(User user) {
+	public List<Log> queryLogs(User user) {
 		Connection connection = DBUtil.getConnection();
 		PreparedStatement statement = null;
 		ResultSet rs = null;
 		String sql = "SELECT * from logs WHERE userId=?;";
-		List<Logs> logs = new ArrayList<>();
+		List<Log> logs = new ArrayList<>();
 		try {
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, user.getId());
 			rs = statement.executeQuery();
 			while (rs.next()) {
-				Logs log = new Logs();
+				Log log = new Log();
 				log.setUserId(rs.getString("userID"));
 				log.setPowerId(rs.getString("powerId"));
 				log.setStartDate(rs.getLong("startDate"));

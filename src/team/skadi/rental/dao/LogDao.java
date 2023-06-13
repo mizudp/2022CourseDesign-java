@@ -2,11 +2,11 @@ package team.skadi.rental.dao;
 
 import java.util.List;
 
-import team.skadi.rental.bean.Logs;
+import team.skadi.rental.bean.Log;
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
 
-public interface LogsDao {
+public interface LogDao {
 	/**
 	 * 添加一条用户使用记录，记录开始世间
 	 * 
@@ -22,7 +22,7 @@ public interface LogsDao {
 	 * @param user  用户
 	 * @param power 需要归还的充电宝
 	 */
-	void finishLog(Logs log);
+	void finishLog(Log log);
 
 	/**
 	 * 获得指定用户和指定充电宝并且没有结束时间的记录
@@ -31,7 +31,7 @@ public interface LogsDao {
 	 * @param power 充电宝
 	 * @return 日志*1。null；没有
 	 */
-	Logs getLog(User user, Power power);
+	Log getLog(User user, Power power);
 
 	/**
 	 * 根据指定的用户id获取所有记录
@@ -39,6 +39,6 @@ public interface LogsDao {
 	 * @param user 用户
 	 * @return 用户记录列表
 	 */
-	List<Logs> queryLogs(User user);
+	List<Log> queryLogs(User user);
 
 }

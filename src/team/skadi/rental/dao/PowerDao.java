@@ -20,7 +20,7 @@ public interface PowerDao {
 	 * @param gtLeft 剩余电量
 	 * @return 充电宝列表
 	 */
-	List<Power> findPowersByPowerLeft(double gtLeft);
+	List<Power> findPowersByPowerLeft(int gtLeft);
 
 	/**
 	 * 根据指定的id查找充电宝

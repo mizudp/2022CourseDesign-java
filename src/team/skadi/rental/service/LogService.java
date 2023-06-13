@@ -2,14 +2,14 @@ package team.skadi.rental.service;
 
 import java.util.List;
 
-import team.skadi.rental.bean.Logs;
+import team.skadi.rental.bean.Log;
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
-import team.skadi.rental.dao.impl.LogsDaoImp;
+import team.skadi.rental.dao.impl.LogDaoImp;
 
-public class LogsService {
-	
-	private static LogsDaoImp ldi = new LogsDaoImp();
+public class LogService {
+
+	private static LogDaoImp ldi = new LogDaoImp();
 
 	/**
 	 * 添加借充电宝日志
@@ -18,6 +18,8 @@ public class LogsService {
 	 * @param power 充电宝
 	 */
 	public static void addBorrowLog(User user, Power power) {
+		power.setStatus(Power.BORROWED);
+		PowerService.getInstance().modify(power);
 		ldi.addLog(user, power, "借充电宝(型号：" + power.getId() + ")");
 	}
 
@@ -26,11 +28,14 @@ public class LogsService {
 	 * 
 	 * @param log 日志
 	 */
-	public static void addReturnLog(Logs log) {
+	public static void addReturnLog(Log log) {
 		log.setEndDate(System.currentTimeMillis());
 		int time = getTime(log);
 		log.setContext(log.getContext() + "时长：" + time + "。花费：" + (time * 1.5f) + "元。");
 		ldi.finishLog(log);
+		Power power = PowerService.getInstance().getPowerById(log.getPowerId());
+		power.setStatus(Power.AVAILABLE);
+		PowerService.getInstance().modify(power);
 	}
 
 	/**
@@ -39,7 +44,7 @@ public class LogsService {
 	 * @param user 用户
 	 * @return
 	 */
-	public static List<Logs> queryLogs(User user) {
+	public static List<Log> queryLogs(User user) {
 		return ldi.queryLogs(user);
 	}
 
@@ -50,7 +55,7 @@ public class LogsService {
 	 * @param power 充电宝
 	 * @return 日志。null：未借
 	 */
-	public static Logs getLog(User user, Power power) {
+	public static Log getLog(User user, Power power) {
 		return ldi.getLog(user, power);
 	}
 
@@ -60,7 +65,7 @@ public class LogsService {
 	 * @param log 需要获取时间间隔的log对象
 	 * @return 时间间隔。单位（小时）
 	 */
-	public static int getTime(Logs log) {
+	public static int getTime(Log log) {
 		double length = log.getEndDate() - log.getStartDate();
 		length /= 3600000;
 		return (int) Math.round(length);

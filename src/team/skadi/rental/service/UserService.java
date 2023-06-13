@@ -2,7 +2,7 @@ package team.skadi.rental.service;
 
 import java.util.List;
 
-import team.skadi.rental.bean.Logs;
+import team.skadi.rental.bean.Log;
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
 import team.skadi.rental.dao.impl.UserDaoImp;
@@ -29,6 +29,7 @@ public class UserService {
 		user.setId(id);
 		udi.addNewUser(id, serialnum);
 		user.setName(userName);
+		user.setSerialnum(serialnum);
 		user.setPassword(userPassword);
 		user.setPhoneNumber(userPhoneNumber);
 		user.setBalance(0);
@@ -57,15 +58,9 @@ public class UserService {
 	/**
 	 * 修改用户信息
 	 * 
-	 * @param user        需要修改的用户
-	 * @param name        修改后的用户名
-	 * @param phoneNumber 修改后的电话号码
-	 * @param email       修改后的邮箱
+	 * @param user 修改后的用户
 	 */
-	public void modify(User user, String name, String phoneNumber, String email) {
-		user.setName(name);
-		user.setPhoneNumber(phoneNumber);
-		user.setEmail(email);
+	public void modify(User user) {
 		udi.updateUser(user);
 	}
 
@@ -77,9 +72,9 @@ public class UserService {
 	 * @return false: 已经借了充电宝，true: 成功借入
 	 */
 	public boolean borrow(User userLogin, Power power) {
-		Logs log = LogsService.getLog(userLogin, power);
+		Log log = LogService.getLog(userLogin, power);
 		if (log == null) {
-			LogsService.addBorrowLog(userLogin, power);
+			LogService.addBorrowLog(userLogin, power);
 			return true;
 		} else {
 			return false;
@@ -91,12 +86,35 @@ public class UserService {
 	 * 
 	 * @param userLogin 已经登录的用户
 	 * @param power     充电宝
+	 * @return 使用时长
 	 */
-	public void giveBack(User userLogin, Power power) {
-		Logs log = LogsService.getLog(userLogin, power);
-		if (log!=null) {
-			LogsService.addReturnLog(log);
+	public int giveBack(User userLogin, Power power) {
+		Log log = LogService.getLog(userLogin, power);
+		if (log != null) {
+			LogService.addReturnLog(log);
 		}
+		return LogService.getTime(log);
+	}
+
+	/**
+	 * 用户使用充电宝
+	 * 
+	 * @param userLogin 已登录用户
+	 * @param power     用户要使用的充电宝
+	 * @param amount    使用了多少电
+	 * @return true 使用成功。false 没电，无法使用
+	 */
+	public boolean use(User userLogin, Power power, int amount) {
+		if (power.getStatus() == Power.NO_POWER || power.getLeft() < amount || amount > 100 || amount < 0) {
+			return false;
+		}
+		power.setLeft(power.getLeft() - amount);
+		PowerService.getInstance().modify(power);
+		if (power.getLeft() == 0) {
+			power.setStatus(Power.NO_POWER);
+			PowerService.getInstance().modify(power);
+		}
+		return true;
 	}
 
 	/**
@@ -105,7 +123,7 @@ public class UserService {
 	 * @param user 要移除的用户
 	 */
 	protected void removeUser(User user) {
-		user.setId("");
+		user.del();
 		udi.updateUser(user);
 	}
 

@@ -2,15 +2,15 @@ package team.skadi.rental.service;
 
 import java.util.List;
 
-import team.skadi.rental.bean.Manger;
+import team.skadi.rental.bean.Manager;
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
-import team.skadi.rental.dao.impl.MangerDaoImp;
+import team.skadi.rental.dao.impl.ManagerDaoImp;
 
-public class MangerService {
+public class ManagerService {
 
-	private MangerDaoImp mdi;
-	private static final MangerService instance = new MangerService();
+	private ManagerDaoImp mdi;
+	private static final ManagerService instance = new ManagerService();
 
 	/**
 	 * 管理人员登录
@@ -19,11 +19,11 @@ public class MangerService {
 	 * @param password 密码
 	 * @return 管理员*1, null: 工号或密码错误
 	 */
-	public Manger login(String id, String password) {
-		Manger manger = mdi.findMangerById(id);
-		if (manger!=null&&manger.getPassword().equals(password)) {
+	public Manager login(String id, String password) {
+		Manager manger = mdi.findMangerById(id);
+		if (manger != null && manger.getPassword().equals(password)) {
 			return manger;
-		} else {			
+		} else {
 			return null;
 		}
 	}
@@ -33,7 +33,7 @@ public class MangerService {
 	 * 
 	 * @param manger 要登出的管理员
 	 */
-	public void signOut(Manger manger) {
+	public void signOut(Manager manger) {
 		manger = null;
 	}
 
@@ -48,11 +48,12 @@ public class MangerService {
 
 	/**
 	 * 添加指定状态的充电宝
-	 * @param left 剩余电量
+	 * 
+	 * @param left 剩余电量[0,100]
 	 * @return 指定电量充电宝
 	 */
-	public Power addPower(double left) {
-		return PowerMangerService.getInstance().add(left);
+	public Power addPower(int left) {
+		return PowerService.getInstance().add(left);
 	}
 
 	/**
@@ -61,7 +62,7 @@ public class MangerService {
 	 * @param power 需要修改的充电宝
 	 */
 	public void modifyPower(Power power) {
-		PowerMangerService.getInstance().modifyPower(power);
+		PowerService.getInstance().modify(power);
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class MangerService {
 	 * @param power 要移除的充电宝
 	 */
 	public void removePower(Power power) {
-		PowerMangerService.getInstance().remove(power);
+		PowerService.getInstance().remove(power);
 	}
 
 	/**
@@ -82,12 +83,12 @@ public class MangerService {
 		return UserService.getInstance().getAllUser();
 	}
 
-	public static MangerService getInstance() {
+	public static ManagerService getInstance() {
 		return instance;
 	}
 
 	// 单例模式
-	private MangerService() {
-		mdi = new MangerDaoImp();
+	private ManagerService() {
+		mdi = new ManagerDaoImp();
 	}
 }

@@ -34,15 +34,15 @@ public class PowerDaoImp implements PowerDao {
 	}
 
 	@Override
-	public List<Power> findPowersByPowerLeft(double gtLeft) {
+	public List<Power> findPowersByPowerLeft(int gtLeft) {
 		Connection connection = DBUtil.getConnection();
-		String sql = "SELECT * FROM powers WHERE left>?;";
+		String sql = "SELECT * FROM powers WHERE `left` > ?;";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		List<Power> powers = null;
 		try {
 			stat = connection.prepareStatement(sql);
-			stat.setDouble(1, gtLeft);
+			stat.setInt(1, gtLeft);
 			rs = stat.executeQuery();// 执行SQL语句
 			powers = getlist(rs);
 		} catch (SQLException e) {
@@ -83,7 +83,7 @@ public class PowerDaoImp implements PowerDao {
 	@Override
 	public void createNewPower() {
 		Connection connection = DBUtil.getConnection();
-		String sql = "INSERT powers (id,left,status) VALUE (null,null,null);";
+		String sql = "INSERT powers(id,`left`,`status`) VALUES(null,null,null);";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
@@ -117,13 +117,13 @@ public class PowerDaoImp implements PowerDao {
 	@Override
 	public void updatePower(Power power) {
 		Connection connection = DBUtil.getConnection();
-		String sql = "UPDATE powers SET id=?,left=?,status=? WHERE serialnum=?;";
+		String sql = "UPDATE powers SET id=?,`left`=?,`status`=? WHERE serialnum=?;";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
 			stat = connection.prepareStatement(sql);
 			stat.setString(1, power.getId());
-			stat.setDouble(2, power.getLeft());
+			stat.setInt(2, power.getLeft());
 			stat.setInt(3, power.getStatus());
 			stat.setInt(4, power.getSerialnum());
 			stat.executeUpdate();
@@ -159,7 +159,7 @@ public class PowerDaoImp implements PowerDao {
 			Power power = new Power();
 			power.setId(rs.getString("id"));
 			power.setSerialnum(rs.getInt("serialnum"));
-			power.setLeft(rs.getDouble("left"));
+			power.setLeft(rs.getInt("left"));
 			power.setStatus(rs.getInt("status"));
 			powers.add(power);
 		}
