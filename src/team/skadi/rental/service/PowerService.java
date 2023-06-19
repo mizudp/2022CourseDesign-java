@@ -69,6 +69,15 @@ public class PowerService {
 	}
 
 	/**
+	 * 获取所有的充电宝
+	 * 
+	 * @return 充电宝
+	 */
+	public List<Power> getAllPowers() {
+		return pdi.getAllPowers();
+	}
+
+	/**
 	 * 根据id获取指定的充电宝
 	 * 
 	 * @param id id

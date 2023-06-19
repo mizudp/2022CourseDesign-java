@@ -136,6 +136,16 @@ public class UserService {
 		return udi.getAllUser();
 	}
 
+	/**
+	 * 根据信用分来获取用户
+	 * 
+	 * @param credit 低于指定信用分（不含）
+	 * @return 信用分低于credit的用户列表
+	 */
+	protected List<User> getUsersByCredit(int credit) {
+		return udi.getUsersByCredit(credit);
+	}
+
 	// 单例模式
 	private UserService() {
 		udi = new UserDaoImp();
