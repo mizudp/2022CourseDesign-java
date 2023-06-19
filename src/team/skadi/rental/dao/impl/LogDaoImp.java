@@ -72,6 +72,7 @@ public class LogDaoImp implements LogDao {
 				log.setUserId(rs.getString("userID"));
 				log.setPowerId(rs.getString("powerId"));
 				log.setStartDate(rs.getLong("startDate"));
+				log.setEndDate(rs.getLong("endDate"));
 				log.setContext(rs.getString("context"));
 			}
 		} catch (SQLException e) {
@@ -98,6 +99,7 @@ public class LogDaoImp implements LogDao {
 				log.setUserId(rs.getString("userID"));
 				log.setPowerId(rs.getString("powerId"));
 				log.setStartDate(rs.getLong("startDate"));
+				log.setEndDate(rs.getLong("endDate"));
 				log.setContext(rs.getString("context"));
 				logs.add(log);
 			}
