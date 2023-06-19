@@ -83,6 +83,15 @@ public class ManagerService {
 		return UserService.getInstance().getAllUser();
 	}
 
+	/**
+	 * @see UserService#getUsersByCredit(int)
+	 * @param credit
+	 * @return
+	 */
+	protected List<User> getUsersByCredit(int credit) {
+		return UserService.getInstance().getUsersByCredit(credit);
+	}
+
 	public static ManagerService getInstance() {
 		return instance;
 	}

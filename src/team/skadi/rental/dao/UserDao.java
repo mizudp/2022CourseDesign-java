@@ -36,6 +36,14 @@ public interface UserDao {
 	List<User> getUsersByBalance(double balance);
 
 	/**
+	 * 通过账户信用分来查询用户
+	 * 
+	 * @param credit 信用分
+	 * @return 用户列表
+	 */
+	List<User> getUsersByCredit(int credit);
+
+	/**
 	 * 创建新用户（空账户）
 	 */
 	void createNewUser();

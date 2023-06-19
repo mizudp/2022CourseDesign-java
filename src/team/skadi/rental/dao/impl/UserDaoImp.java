@@ -107,6 +107,26 @@ public class UserDaoImp implements UserDao {
 	}
 
 	@Override
+	public List<User> getUsersByCredit(int credit) {
+		Connection connection = DBUtil.getConnection();
+		String sql = "SELECT * FROM users WHERE credit<?;";
+		PreparedStatement stat = null;
+		ResultSet rs = null;
+		List<User> users = null;
+		try {
+			stat = connection.prepareStatement(sql);
+			stat.setDouble(1, credit);
+			rs = stat.executeQuery();
+			users = getlist(rs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.closeAll(connection, stat, rs);
+		}
+		return users;
+	}
+
+	@Override
 	public void createNewUser() {
 		Connection connection = DBUtil.getConnection();
 		String sql = "INSERT users (id,name,phoneNumber,password,balance,email) VALUE (null,null,null,null,null,null);";

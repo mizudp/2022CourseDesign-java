@@ -54,6 +54,25 @@ public class PowerDaoImp implements PowerDao {
 	}
 
 	@Override
+	public List<Power> getAllPowers() {
+		Connection connection = DBUtil.getConnection();
+		String sql = "SELECT * FROM powers;";
+		PreparedStatement stat = null;
+		ResultSet rs = null;
+		List<Power> powers = null;
+		try {
+			stat = connection.prepareStatement(sql);
+			rs = stat.executeQuery();// 执行SQL语句
+			powers = getlist(rs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.closeAll(connection, stat, rs);
+		}
+		return powers;
+	}
+
+	@Override
 	public Power findPowerById(String powerId) {
 		Connection connection = DBUtil.getConnection();
 		if (powerId == null) {

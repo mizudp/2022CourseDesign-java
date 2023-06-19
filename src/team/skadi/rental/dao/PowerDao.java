@@ -23,6 +23,13 @@ public interface PowerDao {
 	List<Power> findPowersByPowerLeft(int gtLeft);
 
 	/**
+	 * 获取所有的充电宝
+	 * 
+	 * @return 所有的充电宝列表
+	 */
+	List<Power> getAllPowers();
+	
+	/**
 	 * 根据指定的id查找充电宝
 	 * 
 	 * @param powerId 充电宝id
