@@ -67,13 +67,9 @@ public class LogDaoImp implements LogDao {
 			statement.setString(1, user.getId());
 			statement.setString(2, power.getId());
 			rs = statement.executeQuery();
-			while (rs.next()) {
-				log = new Log();
-				log.setUserId(rs.getString("userID"));
-				log.setPowerId(rs.getString("powerId"));
-				log.setStartDate(rs.getLong("startDate"));
-				log.setEndDate(rs.getLong("endDate"));
-				log.setContext(rs.getString("context"));
+			List<Log> list = getList(rs);
+			if (list.size() > 0) {
+				log = list.get(0);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -94,15 +90,7 @@ public class LogDaoImp implements LogDao {
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, user.getId());
 			rs = statement.executeQuery();
-			while (rs.next()) {
-				Log log = new Log();
-				log.setUserId(rs.getString("userID"));
-				log.setPowerId(rs.getString("powerId"));
-				log.setStartDate(rs.getLong("startDate"));
-				log.setEndDate(rs.getLong("endDate"));
-				log.setContext(rs.getString("context"));
-				logs.add(log);
-			}
+			logs = getList(rs);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -111,4 +99,18 @@ public class LogDaoImp implements LogDao {
 		return logs;
 	}
 
+	private List<Log> getList(ResultSet rs) throws SQLException {
+		ArrayList<Log> logs = new ArrayList<>();
+		while (rs.next()) {
+			Log log = new Log();
+			String userId = rs.getString("userID");
+			log.setUserId(userId);
+			log.setPowerId(rs.getString("powerId"));
+			log.setStartDate(rs.getLong("startDate"));
+			log.setEndDate(rs.getLong("endDate"));
+			log.setContext(rs.getString("context"));
+			logs.add(log);
+		}
+		return logs;
+	}
 }

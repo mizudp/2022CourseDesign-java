@@ -182,16 +182,19 @@ public class UserDaoImp implements UserDao {
 	private List<User> getlist(ResultSet rs) throws SQLException {
 		ArrayList<User> users = new ArrayList<>();
 		while (rs.next()) {
-			User user = new User();
-			user.setId(rs.getString("id"));
-			user.setSerialnum(rs.getInt("serialnum"));
-			user.setName(rs.getString("name"));
-			user.setPhoneNumber(rs.getString("phoneNumber"));
-			user.setPassword(rs.getString("password"));
-			user.setBalance(rs.getDouble("balance"));
-			user.setEmail(rs.getString("email"));
-			user.setCredit(rs.getInt("credit"));
-			users.add(user);
+			String id = rs.getString("id");
+			if (id != null) {
+				User user = new User();
+				user.setId(id);
+				user.setSerialnum(rs.getInt("serialnum"));
+				user.setName(rs.getString("name"));
+				user.setPhoneNumber(rs.getString("phoneNumber"));
+				user.setPassword(rs.getString("password"));
+				user.setBalance(rs.getDouble("balance"));
+				user.setEmail(rs.getString("email"));
+				user.setCredit(rs.getInt("credit"));
+				users.add(user);
+			}
 		}
 		return users;
 	}
