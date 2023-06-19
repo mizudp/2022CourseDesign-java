@@ -175,12 +175,15 @@ public class PowerDaoImp implements PowerDao {
 	private List<Power> getlist(ResultSet rs) throws SQLException {
 		ArrayList<Power> powers = new ArrayList<>();
 		while (rs.next()) {
-			Power power = new Power();
-			power.setId(rs.getString("id"));
-			power.setSerialnum(rs.getInt("serialnum"));
-			power.setLeft(rs.getInt("left"));
-			power.setStatus(rs.getInt("status"));
-			powers.add(power);
+			String id = rs.getString("id");
+			if (id != null) {
+				Power power = new Power();
+				power.setId(id);
+				power.setSerialnum(rs.getInt("serialnum"));
+				power.setLeft(rs.getInt("left"));
+				power.setStatus(rs.getInt("status"));
+				powers.add(power);
+			}
 		}
 		return powers;
 	}
