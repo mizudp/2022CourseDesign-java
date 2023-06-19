@@ -42,7 +42,8 @@ public class MainFrame extends JFrame {
 	private void bulidLayout() {
 		cardLayout = new CardLayout();
 		setLayout(cardLayout);
-		add("login", new LoginPanel(this));
+//		add("login", new LoginPanel(this));
+		add("signUp", new SignUpPanel(this));
 	}
 
 	private void addListener() {

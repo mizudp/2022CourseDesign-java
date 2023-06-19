@@ -3,6 +3,8 @@ package team.skadi.rental.ui;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,12 +17,17 @@ import team.skadi.rental.Main;
 @SuppressWarnings("serial")
 public class LoginPanel extends JPanel {
 
-	private MainFrame mainFrame;
+	MainFrame mainFrame;
+	private JTextField accounTextField;
+	private JPasswordField passwordField;
+	private JButton loginBtn;
+	private JButton signUpBtn;
+	private JButton exitBtn;
 
 	public LoginPanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		bulidLayout();
-
+		addListener();
 	}
 
 	public void bulidLayout() {
@@ -42,7 +49,7 @@ public class LoginPanel extends JPanel {
 		label = new JLabel("账户：", JLabel.CENTER);
 		add(label, gbc);
 		gbc.insets.right = 0;
-		JTextField accounTextField = new JTextField(20);
+		accounTextField = new JTextField(20);
 		add(accounTextField, gbc);
 
 		gbc.gridy++;// 2
@@ -50,24 +57,42 @@ public class LoginPanel extends JPanel {
 		label = new JLabel("密码：", JLabel.CENTER);
 		add(label, gbc);
 		gbc.insets.right = 0;
-		JPasswordField passwordField = new JPasswordField(20);
+		passwordField = new JPasswordField(20);
 		add(passwordField, gbc);
 
 		gbc.gridy++;
 		gbc.gridwidth = 2;
 		gbc.insets.bottom = 0;
 		JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
-		JButton loginBtn = new JButton("登录");
+		loginBtn = new JButton("登录");
 		btnPanel.add(loginBtn);
-		JButton signUpBtn = new JButton("注册");
+		signUpBtn = new JButton("注册");
 		btnPanel.add(signUpBtn);
-		JButton exitBtn = new JButton("退出");
+		exitBtn = new JButton("退出");
 		btnPanel.add(exitBtn);
 		add(btnPanel, gbc);
-		
+
 	}
 
 	private void addListener() {
-		
+		accounTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					passwordField.requestFocus();
+				}
+			}
+		});
+		passwordField.addKeyListener(new PasswordKeyAdapter() {
+			@Override
+			protected void onEnterPressed(KeyEvent e) {
+				login();
+			}
+		});
+
+	}
+
+	private void login() {
+
 	}
 }
