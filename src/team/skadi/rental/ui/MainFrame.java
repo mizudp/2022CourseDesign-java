@@ -43,7 +43,8 @@ public class MainFrame extends JFrame {
 		cardLayout = new CardLayout();
 		setLayout(cardLayout);
 //		add("login", new LoginPanel(this));
-		add("signUp", new SignUpPanel(this));
+//		add("signUp", new SignUpPanel(this));
+		add("user",new UserPanel(this));
 	}
 
 	private void addListener() {
