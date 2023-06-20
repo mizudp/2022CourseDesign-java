@@ -41,4 +41,11 @@ public interface LogDao {
 	 */
 	List<Log> queryLogs(User user);
 
+	/**
+	 * 获取所有日志
+	 * 
+	 * @return 所有日志
+	 */
+	List<Log> getAllLogs();
+
 }

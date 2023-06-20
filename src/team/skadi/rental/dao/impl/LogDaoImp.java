@@ -99,6 +99,25 @@ public class LogDaoImp implements LogDao {
 		return logs;
 	}
 
+	@Override
+	public List<Log> getAllLogs() {
+		Connection connection = DBUtil.getConnection();
+		PreparedStatement statement = null;
+		ResultSet rs = null;
+		String sql = "SELECT * from logs;";
+		List<Log> logs = new ArrayList<>();
+		try {
+			statement = connection.prepareStatement(sql);
+			rs = statement.executeQuery();
+			logs = getList(rs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.closeAll(connection, statement, rs);
+		}
+		return logs;
+	}
+
 	private List<Log> getList(ResultSet rs) throws SQLException {
 		ArrayList<Log> logs = new ArrayList<>();
 		while (rs.next()) {

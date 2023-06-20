@@ -60,6 +60,15 @@ public class LogService {
 	}
 
 	/**
+	 * 获取所有日志
+	 * 
+	 * @return 所有日志
+	 */
+	public static List<Log> getAllLogs() {
+		return ldi.getAllLogs();
+	}
+
+	/**
 	 * 获得log中的时间间隔
 	 * 
 	 * @param log 需要获取时间间隔的log对象
