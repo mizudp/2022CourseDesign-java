@@ -47,9 +47,9 @@ public class PowerTableModel extends AbstractTableModel {
 		case 0:
 			return power.getId();
 		case 1:
-			return power.getLeft();
+			return power.getLeft() + "%";
 		case 2:
-			return power.getStatus();
+			return power.getStatusName(power.getStatus());
 		default:
 			return null;
 		}

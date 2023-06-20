@@ -44,7 +44,8 @@ public class MainFrame extends JFrame {
 		setLayout(cardLayout);
 //		add("login", new LoginPanel(this));
 //		add("signUp", new SignUpPanel(this));
-		add("user",new UserPanel(this));
+//		add("user",new UserPanel(this));
+		add("manager", new ManagerPanel(this));
 	}
 
 	private void addListener() {

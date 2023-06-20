@@ -41,8 +41,8 @@ public class UserTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		User user = userList.get(columnIndex);
-		switch (rowIndex) {
+		User user = userList.get(rowIndex);
+		switch (columnIndex) {
 		case 0:
 			return user.getId();
 		case 1:
