@@ -2,10 +2,12 @@ package team.skadi.rental.service;
 
 import java.util.List;
 
+import team.skadi.rental.Main;
 import team.skadi.rental.bean.Log;
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
 import team.skadi.rental.dao.impl.LogDaoImp;
+import team.skadi.rental.utils.DateUtil;
 
 public class LogService {
 
@@ -27,15 +29,14 @@ public class LogService {
 	 * 添加归还充电宝日志
 	 * 
 	 * @param log 日志
+	 * @return 时间间隔（小时）
 	 */
-	public static void addReturnLog(Log log) {
+	public static int addReturnLog(Log log) {
 		log.setEndDate(System.currentTimeMillis());
 		int time = getTime(log);
-		log.setContext(log.getContext() + "时长：" + time + "。花费：" + (time * 1.5f) + "元。");
+		log.setContext(log.getContext() + "时长：" + time + "。花费：" + Main.getCost(time) + "元。");
 		ldi.finishLog(log);
-		Power power = PowerService.getInstance().getPowerById(log.getPowerId());
-		power.setStatus(Power.AVAILABLE);
-		PowerService.getInstance().modify(power);
+		return time;
 	}
 
 	/**
@@ -45,18 +46,25 @@ public class LogService {
 	 * @return
 	 */
 	public static List<Log> queryLogs(User user) {
-		return ldi.queryLogs(user);
+		return ldi.queryLogs(user, null);
+	}
+
+	public static List<Log> queryLogs(Power power) {
+		return ldi.queryLogs(null, power);
+	}
+
+	public static List<Log> queryLogs(User user, Power power) {
+		return ldi.queryLogs(user, power);
 	}
 
 	/**
 	 * 获取没有归还充电宝的日志
 	 * 
-	 * @param user  用户
-	 * @param power 充电宝
+	 * @param user 用户
 	 * @return 日志。null：未借
 	 */
-	public static Log getLog(User user, Power power) {
-		return ldi.getLog(user, power);
+	public static Log getLog(User user) {
+		return ldi.getLog(user);
 	}
 
 	/**
@@ -75,8 +83,6 @@ public class LogService {
 	 * @return 时间间隔。单位（小时）
 	 */
 	public static int getTime(Log log) {
-		double length = log.getEndDate() - log.getStartDate();
-		length /= 3600000;
-		return (int) Math.round(length);
+		return DateUtil.getTimeSpan(log.getStartDate(), log.getEndDate());
 	}
 }

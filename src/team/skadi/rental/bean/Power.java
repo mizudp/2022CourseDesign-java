@@ -13,7 +13,7 @@ public class Power {
 	/** 该充电宝为空 */
 	public static final int NULL = 0;
 
-	private static final String[] TYPE_NAME = { "损坏", "没电", "已借", "可借" };
+	private static final String[] STATUS_NAME = { "可借", "已借", "没电", "损坏" };
 
 	/** 电源id */
 	private String id;
@@ -56,28 +56,45 @@ public class Power {
 		this.status = status;
 	}
 
-	public String getStatusName(int status) {
+	public void addStatus(int status) {
+		this.status |= status;
+	}
+
+	public void removeStatus(int status) {
+		this.status &= status ^ 0xff;
+	}
+
+	public boolean hasStatus(int status) {
+		if ((this.status & status) != 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public static int getStatusByStatusNmae(String statusName) {
+		int status = 0, bin = 1;
+		for (int i = 0; i < STATUS_NAME.length; i++) {
+			if (statusName.contains(STATUS_NAME[i])) {
+				status |= bin;
+				bin <<= 1;
+			}
+		}
+		return status;
+	}
+
+	public static String getStatusNameByStatu(int status) {
 		if (status == 0) {
 			return "空";
 		}
 		StringBuilder statusName = new StringBuilder();
-		StringBuilder str = new StringBuilder(Integer.toBinaryString(status));
-		int length = str.length();
-		// 补全五位二进制字符串编码
-		for (int i = 0; i < 4 - length; i++) {
-			str.insert(0, '0');
-		}
-		int last = str.lastIndexOf("1");
-		// 根据二进制字符串生成正则表达式
-		for (int i = 0; i < str.length(); i++) {
-			char c = str.charAt(i);
-			if (c == '1') {
-				statusName.append(TYPE_NAME[i]);
-				if (i != last) {
-					statusName.append('|');
-				}
+		for (int i = 0, bin = 1; i < STATUS_NAME.length; i++) {
+			// 使用二进制与运算更快更方便
+			if ((status & bin) != 0) {
+				statusName.append(STATUS_NAME[i]).append('|');
 			}
+			bin <<= 1;
 		}
+		statusName.deleteCharAt(statusName.length() - 1);
 		return statusName.toString();
 	}
 

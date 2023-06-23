@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class DateUtil {
 
-	public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	/**
 	 * 获得当前时间格式为 yyyy-MM-dd hh:mm:ss
@@ -22,5 +22,18 @@ public class DateUtil {
 	 */
 	public static String format(long millisec) {
 		return sdf.format(new Date(millisec));
+	}
+
+	/**
+	 * 获取时间间隔，结果四舍五入
+	 * 
+	 * @param start 起始时间
+	 * @param end   结束时间
+	 * @return 时间间隔，单位：小时
+	 */
+	public static int getTimeSpan(long start, long end) {
+		double time = end - start;
+		time /= 3600000;
+		return (int) Math.round(time);
 	}
 }

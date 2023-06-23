@@ -2,6 +2,8 @@ package team.skadi.rental.bean;
 
 public class Log {
 
+	public static final Log EMPTY_LOG = new Log("", "", 0, 0, "");
+
 	private String userId;
 	private String powerId;
 	private long startDate;

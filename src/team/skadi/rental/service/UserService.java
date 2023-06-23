@@ -2,6 +2,7 @@ package team.skadi.rental.service;
 
 import java.util.List;
 
+import team.skadi.rental.Main;
 import team.skadi.rental.bean.Log;
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.bean.User;
@@ -72,7 +73,7 @@ public class UserService {
 	 * @return false: 已经借了充电宝，true: 成功借入
 	 */
 	public boolean borrow(User userLogin, Power power) {
-		Log log = LogService.getLog(userLogin, power);
+		Log log = LogService.getLog(userLogin);
 		if (log == null) {
 			LogService.addBorrowLog(userLogin, power);
 			return true;
@@ -86,14 +87,23 @@ public class UserService {
 	 * 
 	 * @param userLogin 已经登录的用户
 	 * @param power     充电宝
-	 * @return 使用时长
+	 * @return false：没有租借记录
 	 */
-	public int giveBack(User userLogin, Power power) {
-		Log log = LogService.getLog(userLogin, power);
+	public boolean giveBack(User userLogin, Power power) {
+		Log log = LogService.getLog(userLogin);
 		if (log != null) {
-			LogService.addReturnLog(log);
+			if (power.hasStatus(Power.NO_POWER)) {
+				power.removeStatus(Power.BORROWED);
+			} else {
+				power.setStatus(Power.AVAILABLE);
+			}
+			PowerService.getInstance().modify(power);
+			int timeSpan = LogService.addReturnLog(log);
+			userLogin.setBalance(userLogin.getBalance() - Main.getCost(timeSpan));
+			UserService.getInstance().modify(userLogin);
+			return true;
 		}
-		return LogService.getTime(log);
+		return false;
 	}
 
 	/**
@@ -109,11 +119,10 @@ public class UserService {
 			return false;
 		}
 		power.setLeft(power.getLeft() - amount);
-		PowerService.getInstance().modify(power);
 		if (power.getLeft() == 0) {
-			power.setStatus(Power.NO_POWER);
-			PowerService.getInstance().modify(power);
+			power.addStatus(Power.NO_POWER);
 		}
+		PowerService.getInstance().modify(power);
 		return true;
 	}
 
@@ -144,6 +153,26 @@ public class UserService {
 	 */
 	protected List<User> getUsersByCredit(int credit) {
 		return udi.getUsersByCredit(credit);
+	}
+
+	/**
+	 * 通过id查询用户
+	 * 
+	 * @param id 用户id
+	 * @return 指定id的用户
+	 */
+	protected User findUserById(String id) {
+		return udi.findUserById(id);
+	}
+
+	/**
+	 * 根据用户余额
+	 * 
+	 * @param balance 余额
+	 * @return 小于指定金额的用户列表
+	 */
+	protected List<User> getUsersByBalance(double balance) {
+		return udi.getUsersByBalance(balance);
 	}
 
 	// 单例模式

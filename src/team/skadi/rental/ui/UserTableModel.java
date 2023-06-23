@@ -1,10 +1,14 @@
 package team.skadi.rental.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumnModel;
 
 import team.skadi.rental.bean.User;
+import team.skadi.rental.service.ManagerService;
+import team.skadi.rental.ui.SearchPanel.SearchResult;
 
 @SuppressWarnings("serial")
 public class UserTableModel extends AbstractTableModel {
@@ -16,8 +20,56 @@ public class UserTableModel extends AbstractTableModel {
 		this.userList = userList;
 	}
 
+	public void changeData(List<User> userList) {
+		this.userList = userList;
+		fireTableDataChanged();
+	}
+
+	public SearchResult chageData(int searchIndex, String content) {
+		List<User> users = null;
+		switch (searchIndex) {
+		case SearchPanel.USER_ID:
+			User user = ManagerService.getInstance().findUserById(content);
+			if (user != null) {
+				users = new ArrayList<>(1);
+				users.add(user);
+			}
+			break;
+		case SearchPanel.USER_BALANCE:
+			double balance = 0;
+			try {
+				balance = Double.parseDouble(content);
+			} catch (NumberFormatException e) {
+				return SearchResult.NAN;
+			}
+			users = ManagerService.getInstance().getUsersByBalance(balance);
+			break;
+		case SearchPanel.USER_CREDIT:
+			int credit = 0;
+			try {
+				credit = Integer.parseInt(content);
+			} catch (NumberFormatException e) {
+				return SearchResult.NAN;
+			}
+			users = ManagerService.getInstance().getUsersByCredit(credit);
+			break;
+		}
+		if (users != null && users.size() != 0) {
+			changeData(users);
+			return SearchResult.HAVE_RESULT;
+		}
+		return SearchResult.NO_RESULT;
+	}
+
 	public void addUser(User user) {
 		userList.add(user);
+	}
+	
+	public void setPreferredWidth(TableColumnModel columnModel) {
+		columnModel.getColumn(0).setPreferredWidth(1);
+		columnModel.getColumn(1).setPreferredWidth(1);
+		columnModel.getColumn(3).setPreferredWidth(1);
+		columnModel.getColumn(5).setPreferredWidth(1);
 	}
 
 	public void removeUser(int rowIndex) {

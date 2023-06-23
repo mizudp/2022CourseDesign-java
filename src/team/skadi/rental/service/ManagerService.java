@@ -79,7 +79,7 @@ public class ManagerService {
 	 * 
 	 * @return 用户列表
 	 */
-	public List<User> getUserList() {
+	public List<User> getAllUsers() {
 		return UserService.getInstance().getAllUser();
 	}
 
@@ -88,8 +88,28 @@ public class ManagerService {
 	 * @param credit
 	 * @return
 	 */
-	protected List<User> getUsersByCredit(int credit) {
+	public List<User> getUsersByCredit(int credit) {
 		return UserService.getInstance().getUsersByCredit(credit);
+	}
+
+	/**
+	 * 通过id查询用户
+	 * 
+	 * @param id 用户id
+	 * @return 指定id的用户
+	 */
+	public User findUserById(String id) {
+		return UserService.getInstance().findUserById(id);
+	}
+
+	/**
+	 * 根据用户余额
+	 * 
+	 * @param balance 余额
+	 * @return 小于指定金额的用户列表
+	 */
+	public List<User> getUsersByBalance(double balance) {
+		return UserService.getInstance().getUsersByBalance(balance);
 	}
 
 	public static ManagerService getInstance() {

@@ -1,10 +1,13 @@
 package team.skadi.rental.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 import team.skadi.rental.bean.Power;
+import team.skadi.rental.service.PowerService;
+import team.skadi.rental.ui.SearchPanel.SearchResult;
 
 @SuppressWarnings("serial")
 public class PowerTableModel extends AbstractTableModel {
@@ -16,8 +19,54 @@ public class PowerTableModel extends AbstractTableModel {
 		this.powerList = powerList;
 	}
 
+	public void changeData(List<Power> powerList) {
+		this.powerList = powerList;
+		fireTableDataChanged();
+	}
+
+	public List<Power> getData() {
+		return powerList;
+	}
+
+	/**
+	 * 
+	 * @param searchIndex 当前的子选择模式
+	 * @param content     要查询的内容
+	 * @return true:有结果。
+	 */
+	public SearchResult changeData(int searchIndex, String content) {
+		List<Power> powerList = null;
+		switch (searchIndex) {
+		case SearchPanel.POWER_ID:
+			Power power = PowerService.getInstance().getPowerById(content);
+			if (power != null) {
+				powerList = new ArrayList<>(1);
+				powerList.add(power);
+			}
+			break;
+		case SearchPanel.POWER_LEFT:
+			int powerLeft = 0;
+			try {
+				powerLeft = Integer.parseInt(content);
+			} catch (Exception e) {
+				return SearchResult.NAN;
+			}
+			powerList = PowerService.getInstance().getPowersByPowerLeft(powerLeft);
+			break;
+		case SearchPanel.POWER_STATUS:
+			powerList = PowerService.getInstance().getPowersByStatus(Power.getStatusByStatusNmae(content));
+			break;
+		}
+		if (powerList != null && powerList.size() != 0) {
+			changeData(powerList);
+			return SearchResult.HAVE_RESULT;
+		}
+		return SearchResult.NO_RESULT;
+	}
+
 	public void removePower(int rowIndex) {
 		powerList.remove(rowIndex);
+		fireTableRowsDeleted(rowIndex, rowIndex);
 	}
 
 	@Override
@@ -49,7 +98,7 @@ public class PowerTableModel extends AbstractTableModel {
 		case 1:
 			return power.getLeft() + "%";
 		case 2:
-			return power.getStatusName(power.getStatus());
+			return Power.getStatusNameByStatu(power.getStatus());
 		default:
 			return null;
 		}

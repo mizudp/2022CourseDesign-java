@@ -9,32 +9,31 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public abstract class BasicDIalog extends JDialog implements ActionListener {
+public abstract class BasicDialog extends JDialog implements ActionListener {
 
-	public static final int NULL = 0, CENCEL = 1, CONFIRM = 2;
+	public static final int NULL = -1, CENCEL = -3, CONFIRM = -2;
 
 	protected int option;
 
-	MainFrame mainFrame;
 	private JButton confirmBtn;
 	private JButton cencelBtn;
 
-	public BasicDIalog(MainFrame mainFrame, String title) {
-		super(mainFrame, title);
-		this.mainFrame = mainFrame;
-		bulidLayout();
-		addListener();
-		buildSouthBtnPanel();
-		init();
+	public BasicDialog(JFrame frame, String title) {
+		super(frame, title);
 	}
 
 	protected void init() {
+		bulidLayout();
+		buildSouthBtnPanel();
+		addListener();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setModal(true);
 		pack();
-		Rectangle bounds = mainFrame.getBounds();
+		Rectangle bounds = getOwner().getBounds();
 		Point point = new Point();
 		point.x = bounds.x + (bounds.width - getWidth()) / 2;
 		point.y = bounds.y + (bounds.height - getHeight()) / 2;
@@ -81,5 +80,7 @@ public abstract class BasicDIalog extends JDialog implements ActionListener {
 
 	abstract protected void bulidLayout();
 
-	abstract protected void addListener();
+	protected void addListener() {
+
+	}
 }

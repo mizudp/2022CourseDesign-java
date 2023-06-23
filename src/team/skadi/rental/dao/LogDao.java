@@ -27,19 +27,10 @@ public interface LogDao {
 	/**
 	 * 获得指定用户和指定充电宝并且没有结束时间的记录
 	 * 
-	 * @param user  用户
-	 * @param power 充电宝
+	 * @param user 用户
 	 * @return 日志*1。null；没有
 	 */
-	Log getLog(User user, Power power);
-
-	/**
-	 * 根据指定的用户id获取所有记录
-	 * 
-	 * @param user 用户
-	 * @return 用户记录列表
-	 */
-	List<Log> queryLogs(User user);
+	Log getLog(User user);
 
 	/**
 	 * 获取所有日志
@@ -47,5 +38,15 @@ public interface LogDao {
 	 * @return 所有日志
 	 */
 	List<Log> getAllLogs();
+
+
+	/**
+	 * 通过移动用户和移动电源查找日志
+	 * 
+	 * @param user  用户
+	 * @param power 移动电源
+	 * @return 有关于这个用户和移动电源的日志
+	 */
+	List<Log> queryLogs(User user, Power power);
 
 }

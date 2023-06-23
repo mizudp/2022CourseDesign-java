@@ -86,17 +86,16 @@ public class PowerDaoImp implements PowerDao {
 			stat = connection.prepareStatement(sql);
 			stat.setString(1, powerId);
 			rs = stat.executeQuery();// 执行SQL语句
-			power = getlist(rs).get(0);
+			List<Power> powerList = getlist(rs);
+			if (powerList.size() != 0) {
+				power = powerList.get(0);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBUtil.closeAll(connection, stat, rs);
 		}
-		if (power.getId() == null) {
-			return null;
-		} else {
-			return power;
-		}
+		return power;
 	}
 
 	@Override

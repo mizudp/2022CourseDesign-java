@@ -56,16 +56,15 @@ public class LogDaoImp implements LogDao {
 	}
 
 	@Override
-	public Log getLog(User user, Power power) {
+	public Log getLog(User user) {
 		Connection connection = DBUtil.getConnection();
 		PreparedStatement statement = null;
 		ResultSet rs = null;
-		String sql = "SELECT * from logs WHERE userId=? AND powerId=? AND endDate IS NULL;";
+		String sql = "SELECT * from logs WHERE userId=? AND endDate IS NULL;";
 		Log log = null;
 		try {
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, user.getId());
-			statement.setString(2, power.getId());
 			rs = statement.executeQuery();
 			List<Log> list = getList(rs);
 			if (list.size() > 0) {
@@ -77,26 +76,6 @@ public class LogDaoImp implements LogDao {
 			DBUtil.closeAll(connection, statement, rs);
 		}
 		return log;
-	}
-
-	@Override
-	public List<Log> queryLogs(User user) {
-		Connection connection = DBUtil.getConnection();
-		PreparedStatement statement = null;
-		ResultSet rs = null;
-		String sql = "SELECT * from logs WHERE userId=?;";
-		List<Log> logs = new ArrayList<>();
-		try {
-			statement = connection.prepareStatement(sql);
-			statement.setString(1, user.getId());
-			rs = statement.executeQuery();
-			logs = getList(rs);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.closeAll(connection, statement, rs);
-		}
-		return logs;
 	}
 
 	@Override
@@ -118,12 +97,39 @@ public class LogDaoImp implements LogDao {
 		return logs;
 	}
 
+	@Override
+	public List<Log> queryLogs(User user, Power power) {
+		Connection connection = DBUtil.getConnection();
+		PreparedStatement statement = null;
+		ResultSet rs = null;
+		StringBuilder sql = new StringBuilder("SELECT * from logs WHERE");
+		if (user != null) {
+			sql.append(" userId=").append('\'').append(user.getId()).append('\'');
+		}
+		if (user != null && power != null) {
+			sql.append(" AND");
+		}
+		if (power != null) {
+			sql.append(" powerId=").append('\'').append(power.getId()).append('\'');
+		}
+		List<Log> logs = new ArrayList<>();
+		try {
+			statement = connection.prepareStatement(sql.toString());
+			rs = statement.executeQuery();
+			logs = getList(rs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.closeAll(connection, statement, rs);
+		}
+		return logs;
+	}
+
 	private List<Log> getList(ResultSet rs) throws SQLException {
 		ArrayList<Log> logs = new ArrayList<>();
 		while (rs.next()) {
 			Log log = new Log();
-			String userId = rs.getString("userID");
-			log.setUserId(userId);
+			log.setUserId(rs.getString("userID"));
 			log.setPowerId(rs.getString("powerId"));
 			log.setStartDate(rs.getLong("startDate"));
 			log.setEndDate(rs.getLong("endDate"));
