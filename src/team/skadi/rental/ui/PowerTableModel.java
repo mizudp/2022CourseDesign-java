@@ -1,22 +1,25 @@
 package team.skadi.rental.ui;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
+import javax.swing.JTable;
 
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.service.PowerService;
 import team.skadi.rental.ui.SearchPanel.SearchResult;
 
 @SuppressWarnings("serial")
-public class PowerTableModel extends AbstractTableModel {
+public class PowerTableModel extends BasicTableModel {
 
 	private String[] title = { "充电宝id", "剩余电量", "租借状态" };
 	private List<Power> powerList;
 
-	public PowerTableModel(List<Power> powerList) {
-		this.powerList = powerList;
+	public PowerTableModel(int mode) {
+		super(mode);
+		this.powerList = new ArrayList<>();
 	}
 
 	public void changeData(List<Power> powerList) {
@@ -26,6 +29,17 @@ public class PowerTableModel extends AbstractTableModel {
 
 	public List<Power> getData() {
 		return powerList;
+	}
+
+	public void addPower(Power power) {
+		powerList.add(power);
+		int row = powerList.size() - 1;
+		fireTableRowsInserted(row, row);
+	}
+
+	public void removePower(int rowIndex) {
+		powerList.remove(rowIndex);
+		fireTableCellUpdated(rowIndex, rowIndex);
 	}
 
 	/**
@@ -64,11 +78,6 @@ public class PowerTableModel extends AbstractTableModel {
 		return SearchResult.NO_RESULT;
 	}
 
-	public void removePower(int rowIndex) {
-		powerList.remove(rowIndex);
-		fireTableRowsDeleted(rowIndex, rowIndex);
-	}
-
 	@Override
 	public int getRowCount() {
 		return powerList.size();
@@ -101,6 +110,24 @@ public class PowerTableModel extends AbstractTableModel {
 			return Power.getStatusNameByStatu(power.getStatus());
 		default:
 			return null;
+		}
+	}
+
+	public class DoubleClick extends MouseAdapter {
+
+		private MainFrame mainFrame;
+
+		public DoubleClick(MainFrame mainFrame) {
+			this.mainFrame = mainFrame;
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			JTable table = (JTable) e.getSource();
+			if (e.getClickCount() == 2) {
+				Power power = powerList.get(table.getSelectedRow());
+				new PowerOption(mainFrame, OptionDialog.READ_ONLY_MODE, power).setVisible(true);
+			}
 		}
 	}
 

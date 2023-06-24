@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public abstract class BasicDialog extends JDialog implements ActionListener {
 
-	public static final int NULL = -1, CENCEL = -3, CONFIRM = -2;
+	public static final int NULL_OPTION = -1, CENCEL_OPTION = -3, CONFIRM_OPTION = -2;
 
 	protected int option;
 
@@ -69,12 +69,12 @@ public abstract class BasicDialog extends JDialog implements ActionListener {
 	}
 
 	protected boolean onConfirmBtnClick() {
-		option = CONFIRM;
+		option = CONFIRM_OPTION;
 		return true;
 	}
 
 	protected boolean onCencelBtnClick() {
-		option = CENCEL;
+		option = CENCEL_OPTION;
 		return true;
 	}
 

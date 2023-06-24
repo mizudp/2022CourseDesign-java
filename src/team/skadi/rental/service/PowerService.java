@@ -23,10 +23,9 @@ public class PowerService {
 	/**
 	 * 添加指定的充电宝
 	 * 
-	 * @param left 电量[0,100]
 	 * @return 添加的充电宝
 	 */
-	protected Power add(int left) {
+	protected Power add(Power power) {
 		int serialnum = pdi.getSerialnum();
 		if (serialnum == 0) {
 			pdi.createNewPower();
@@ -34,7 +33,10 @@ public class PowerService {
 		}
 		String powerId = String.format("%06d", serialnum);
 		pdi.addNewPower(powerId, serialnum);
-		Power power = new Power(powerId, serialnum, left, Power.AVAILABLE);
+		power.setId(powerId);
+		power.setSerialnum(serialnum);
+		power.setLeft(power.getLeft());
+		power.setStatus(Power.AVAILABLE);
 		pdi.updatePower(power);
 		return power;
 	}

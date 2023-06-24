@@ -49,11 +49,15 @@ public class ManagerService {
 	/**
 	 * 添加指定状态的充电宝
 	 * 
-	 * @param left 剩余电量[0,100]
 	 * @return 指定电量充电宝
 	 */
-	public Power addPower(int left) {
-		return PowerService.getInstance().add(left);
+	public Power addPower(Power power) {
+		return PowerService.getInstance().add(power);
+	}
+
+	public User addUser(User user) {
+		return UserService.getInstance().signIn(user.getName(), user.getPassword(), user.getPhoneNumber(),
+				user.getEmail());
 	}
 
 	/**

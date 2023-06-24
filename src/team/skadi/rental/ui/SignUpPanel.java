@@ -101,14 +101,9 @@ public class SignUpPanel extends JPanel implements ActionListener {
 	}
 
 	private void addListener() {
-		nameField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					passwordField.requestFocus();
-				}
-			}
-		});
+		nameField.addKeyListener(new EnterPress(phoneNumField));
+		phoneNumField.addKeyListener(new EnterPress(emailField));
+		emailField.addKeyListener(new EnterPress(passwordField));
 		PasswordKeyAdapter passwordKeyAdapter = new PasswordKeyAdapter() {
 			@Override
 			protected void onEnterPressed(KeyEvent e) {
@@ -121,8 +116,8 @@ public class SignUpPanel extends JPanel implements ActionListener {
 		};
 		passwordField.addKeyListener(passwordKeyAdapter);
 		passwordField2.addKeyListener(passwordKeyAdapter);
-		finishBtn.addActionListener(System.out::println);
 		returnBtn.addActionListener(this);
+		finishBtn.addActionListener(this);
 	}
 
 	@Override
@@ -166,4 +161,19 @@ public class SignUpPanel extends JPanel implements ActionListener {
 		passwordField2.setText("");
 	}
 
+	private class EnterPress extends KeyAdapter {
+
+		private JTextField textField;
+
+		public EnterPress(JTextField textField) {
+			this.textField = textField;
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+				textField.requestFocus();
+			}
+		}
+	}
 }

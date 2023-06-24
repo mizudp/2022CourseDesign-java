@@ -13,7 +13,7 @@ public class Power {
 	/** 该充电宝为空 */
 	public static final int NULL = 0;
 
-	private static final String[] STATUS_NAME = { "可借", "已借", "没电", "损坏" };
+	public static final String[] STATUS_NAME = { "可借", "已借", "没电", "损坏" };
 
 	/** 电源id */
 	private String id;
@@ -113,4 +113,10 @@ public class Power {
 
 	public Power() {
 	}
+
+	@Override
+	public String toString() {
+		return "Power [id=" + id + ", serialnum=" + serialnum + ", left=" + left + ", status=" + getStatusNameByStatu(status) + "]";
+	}
+	
 }

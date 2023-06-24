@@ -18,6 +18,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 import team.skadi.rental.bean.Manager;
+import team.skadi.rental.bean.Power;
+import team.skadi.rental.bean.User;
 import team.skadi.rental.service.LogService;
 import team.skadi.rental.service.ManagerService;
 import team.skadi.rental.service.PowerService;
@@ -79,24 +81,27 @@ public class ManagerPanel extends JPanel implements ActionListener {
 		gbc.insets.set(15, 15, 15, 15);
 
 		tabbedPane = new JTabbedPane();
-		
-		userTableModel = new UserTableModel(ManagerService.getInstance().getAllUsers());
+
+		userTableModel = new UserTableModel(BasicTableModel.MANAGER_MODE);
 		userTable = new JTable(userTableModel);
+		userTable.addMouseListener(userTableModel.new DoubleClick(mainFrame));
 		userTable.setRowHeight(30);
 		userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		userTableModel.setPreferredWidth(userTable.getColumnModel());
 		tabbedPane.add("用户列表", new JScrollPane(userTable));
 
-		powerTableModel = new PowerTableModel(PowerService.getInstance().getAllPowers());
+		powerTableModel = new PowerTableModel(BasicTableModel.MANAGER_MODE);
 		powerTable = new JTable(powerTableModel);
+		powerTable.addMouseListener(powerTableModel.new DoubleClick(mainFrame));
 		powerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		powerTable.setRowHeight(30);
 		tabbedPane.add("充电宝列表", new JScrollPane(powerTable));
 
-		logTableModel = new LogTableModel(LogService.getAllLogs(), LogTableModel.MANAGER_MODE);
+		logTableModel = new LogTableModel(LogTableModel.MANAGER_MODE);
 		logTable = new JTable(logTableModel);
 		logTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		logTable.setRowHeight(30);
+		logTable.addMouseListener(logTableModel.new DoubleClick(mainFrame));
 		logTableModel.setPreferredWidth(logTable.getColumnModel());
 		tabbedPane.add("订单日志列表", new JScrollPane(logTable));
 
@@ -171,6 +176,9 @@ public class ManagerPanel extends JPanel implements ActionListener {
 	public void setLoginManager(Manager loginManager) {
 		this.loginManager = loginManager;
 		updateLable();
+		userTableModel.changeData(ManagerService.getInstance().getAllUsers());
+		powerTableModel.changeData(PowerService.getInstance().getAllPowers());
+		logTableModel.changeData(LogService.getAllLogs());
 		tabbedPane.setSelectedIndex(0);
 	}
 
@@ -183,11 +191,45 @@ public class ManagerPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if (source.equals(addBtn)) {
-
+			switch (searchPanel.getSearchMode()) {
+			case SearchPanel.USER_MODE:
+				User user = new UserOption(mainFrame).getUser();
+				userTableModel.addUser(user);
+				break;
+			case SearchPanel.POWER_MODE:
+				Power power = new PowerOption(mainFrame).getPower();
+				powerTableModel.addPower(power);
+				break;
+			}
 		} else if (source.equals(delBtn)) {
-
+			int row;
+			switch (searchPanel.getSearchMode()) {
+			case SearchPanel.USER_MODE:
+				row = userTable.getSelectedRow();
+				if (row != -1) {
+					userTableModel.removeUser(row);
+				}
+				break;
+			case SearchPanel.POWER_MODE:
+				row = powerTable.getSelectedRow();
+				if (row != -1) {
+					powerTableModel.removePower(row);
+				}
+				break;
+			}
 		} else if (source.equals(refash)) {
-
+			switch (searchPanel.getSearchMode()) {
+			case SearchPanel.USER_MODE:
+				userTableModel.changeData(ManagerService.getInstance().getAllUsers());
+				break;
+			case SearchPanel.POWER_MODE:
+				powerTableModel.changeData(PowerService.getInstance().getAllPowers());
+				break;
+			case SearchPanel.LOG_MODE:
+				logTableModel.changeData(LogService.getAllLogs());
+				break;
+			}
+			searchPanel.close();
 		} else if (source.equals(exitBtn)) {
 			mainFrame.showPanel(PanelName.MANAGER_LOGIN);
 			loginManager = null;

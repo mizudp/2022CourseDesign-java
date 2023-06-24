@@ -3,7 +3,7 @@ package team.skadi.rental.ui;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public abstract class PasswordKeyAdapter extends KeyAdapter {
+public class PasswordKeyAdapter extends KeyAdapter {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {

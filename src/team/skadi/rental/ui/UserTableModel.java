@@ -1,9 +1,11 @@
 package team.skadi.rental.ui;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
+import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 
 import team.skadi.rental.bean.User;
@@ -11,13 +13,14 @@ import team.skadi.rental.service.ManagerService;
 import team.skadi.rental.ui.SearchPanel.SearchResult;
 
 @SuppressWarnings("serial")
-public class UserTableModel extends AbstractTableModel {
+public class UserTableModel extends BasicTableModel {
 
 	private String[] title = { "用户id", "用户名", "电话号码", "账号余额", " 邮箱", "信用分" };
 	private List<User> userList;
 
-	public UserTableModel(List<User> userList) {
-		this.userList = userList;
+	public UserTableModel(int mode) {
+		super(mode);
+		this.userList = new ArrayList<>();
 	}
 
 	public void changeData(List<User> userList) {
@@ -63,8 +66,10 @@ public class UserTableModel extends AbstractTableModel {
 
 	public void addUser(User user) {
 		userList.add(user);
+		int row = userList.size() - 1;
+		fireTableRowsInserted(row, row);
 	}
-	
+
 	public void setPreferredWidth(TableColumnModel columnModel) {
 		columnModel.getColumn(0).setPreferredWidth(1);
 		columnModel.getColumn(1).setPreferredWidth(1);
@@ -74,6 +79,7 @@ public class UserTableModel extends AbstractTableModel {
 
 	public void removeUser(int rowIndex) {
 		userList.remove(rowIndex);
+		fireTableRowsDeleted(rowIndex, rowIndex);
 	}
 
 	@Override
@@ -112,4 +118,21 @@ public class UserTableModel extends AbstractTableModel {
 		}
 	}
 
+	public class DoubleClick extends MouseAdapter {
+
+		private MainFrame mainFrame;
+
+		public DoubleClick(MainFrame mainFrame) {
+			this.mainFrame = mainFrame;
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			JTable table = (JTable) e.getSource();
+			if (e.getClickCount() == 2) {
+				User user = userList.get(table.getSelectedRow());
+				new UserOption(mainFrame, OptionDialog.READ_ONLY_MODE, user).setVisible(true);
+			}
+		}
+	}
 }

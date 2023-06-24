@@ -1,8 +1,11 @@
 package team.skadi.rental.ui;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
+import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 
 import team.skadi.rental.bean.Log;
@@ -13,16 +16,14 @@ import team.skadi.rental.ui.SearchPanel.SearchResult;
 import team.skadi.rental.utils.DateUtil;
 
 @SuppressWarnings("serial")
-public class LogTableModel extends AbstractTableModel {
-
-	public static final int USER_MODE = 0, MANAGER_MODE = 1;
+public class LogTableModel extends BasicTableModel {
 
 	private String[] title;
 	private List<Log> logList;
-	private int mode;
 
-	public LogTableModel(List<Log> logList, int mode) {
-		this.logList = logList;
+	public LogTableModel(int mode) {
+		super(mode);
+		this.logList = new ArrayList<>();
 		this.mode = mode;
 		if (mode == USER_MODE) {
 			title = new String[] { "充电宝id", "租借时间", "归还时间", "内容" };
@@ -101,6 +102,22 @@ public class LogTableModel extends AbstractTableModel {
 		columnModel.getColumn(0).setPreferredWidth(1);
 		if (mode == MANAGER_MODE) {
 			columnModel.getColumn(1).setPreferredWidth(1);
+		}
+	}
+
+	public class DoubleClick extends MouseAdapter {
+		private MainFrame mainFrame;
+
+		public DoubleClick(MainFrame mainFrame) {
+			this.mainFrame = mainFrame;
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			JTable table = (JTable) e.getSource();
+			if (e.getClickCount() == 2) {
+				new LogOption(mainFrame, logList.get(table.getSelectedRow())).setVisible(true);
+			}
 		}
 	}
 

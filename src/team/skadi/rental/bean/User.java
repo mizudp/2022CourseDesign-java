@@ -99,4 +99,10 @@ public class User {
 
 	public User() {
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", serialnum=" + serialnum + ", name=" + name + ", phoneNumber=" + phoneNumber
+				+ ", password=" + password + ", balance=" + balance + ", email=" + email + ", credit=" + credit + "]";
+	}
 }

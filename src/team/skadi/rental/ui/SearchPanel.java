@@ -78,6 +78,18 @@ public class SearchPanel extends JPanel implements ActionListener {
 		this.l = l;
 	}
 
+	public int getSearchMode() {
+		return searchMode;
+	}
+
+	public void close() {
+		if (isSeraching) {
+			isSeraching = false;
+			l.onCloseButtonClick(searchMode);
+			closeBtn.setEnabled(isSeraching);
+		}
+	}
+
 	private void bulidLayout(int leftPadding, int rightPadding) {
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -120,7 +132,7 @@ public class SearchPanel extends JPanel implements ActionListener {
 			public void mouseReleased(MouseEvent e) {
 				label.setBackground(defaultColor);
 				int result = new SelectOptionDialog(mainFrame).getResult();
-				if (result != BasicDialog.CENCEL) {
+				if (result != BasicDialog.CENCEL_OPTION) {
 					searchIndex[searchMode] = result;
 					updateLabel();
 				}
@@ -141,7 +153,7 @@ public class SearchPanel extends JPanel implements ActionListener {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					search();
-					closeBtn.setEnabled(isSeraching);
+
 				}
 			}
 		});
@@ -154,12 +166,8 @@ public class SearchPanel extends JPanel implements ActionListener {
 		if (e.getSource().equals(searchBtn)) {
 			search();
 		} else { // closeBtn
-			if (isSeraching) {
-				isSeraching = false;
-				l.onCloseButtonClick(searchMode);
-			}
+			close();
 		}
-		closeBtn.setEnabled(isSeraching);
 	}
 
 	private void search() {
@@ -175,6 +183,7 @@ public class SearchPanel extends JPanel implements ActionListener {
 				isSeraching = true;
 				break;
 			}
+			closeBtn.setEnabled(isSeraching);
 		}
 	}
 
@@ -277,5 +286,4 @@ public class SearchPanel extends JPanel implements ActionListener {
 			return true;
 		}
 	}
-
 }
