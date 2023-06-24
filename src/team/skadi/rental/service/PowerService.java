@@ -2,6 +2,7 @@ package team.skadi.rental.service;
 
 import java.util.List;
 
+import team.skadi.rental.Main;
 import team.skadi.rental.bean.Power;
 import team.skadi.rental.dao.impl.PowerDaoImp;
 
@@ -100,7 +101,18 @@ public class PowerService {
 			return;
 		}
 		power.setLeft(power.getLeft() + (power.getLeft() + amount > 100 ? 100 - power.getLeft() : amount));
+		power.removeStatus(Power.NO_POWER);
 		pdi.updatePower(power);
+	}
+
+	/**
+	 * 随机充电
+	 */
+	public void chageAll() {
+		List<Power> allPowers = getAllPowers();
+		for (Power power : allPowers) {
+			chage(power, Main.getRandom(1, 10));
+		}
 	}
 
 	// 单例模式

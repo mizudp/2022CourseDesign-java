@@ -122,7 +122,7 @@ public class UserService {
 		if (power.getLeft() == 0) {
 			power.addStatus(Power.NO_POWER);
 		}
-		PowerService.getInstance().modify(power);
+//		PowerService.getInstance().modify(power);
 		return true;
 	}
 

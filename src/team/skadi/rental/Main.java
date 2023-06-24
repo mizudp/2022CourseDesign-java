@@ -9,11 +9,13 @@ import javax.swing.plaf.FontUIResource;
 
 import team.skadi.rental.ui.MainFrame;
 
-public class Main {
+public final class Main {
 
 	public static final Font DEFAILT_FONT = new Font("微软雅黑", Font.PLAIN, 18);
 	public static final Font MIDDLE_FONT = new Font("微软雅黑", Font.PLAIN, 28);
 	public static final Font TITLE_FONT = new Font("微软雅黑", Font.PLAIN, 42);
+
+	public static final double CHARGING_STANDARD = 1.5;
 
 	public static void main(String[] args) {
 //		设置全局字体
@@ -36,7 +38,18 @@ public class Main {
 	 * @param timeSpan 时间间隔（小时）
 	 * @return 花费金额
 	 */
-	public static double getCost(int timeSpan) {
-		return timeSpan * 1.5;
+	public static final double getCost(int timeSpan) {
+		return timeSpan * CHARGING_STANDARD;
+	}
+
+	/**
+	 * 获取随机数
+	 * 
+	 * @param min 最小值
+	 * @param max 最大值
+	 * @return 最小值到最大值之间的随机数 [max,min]
+	 */
+	public static final int getRandom(int min, int max) {
+		return (int) (Math.random() * (max - min + 1) + min);
 	}
 }

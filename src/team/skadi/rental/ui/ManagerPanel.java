@@ -46,6 +46,7 @@ public class ManagerPanel extends JPanel implements ActionListener {
 	private LogTableModel logTableModel;
 	private JButton exitBtn;
 	private JButton refash;
+	private JButton chargeAllBtn;
 	private SearchPanel searchPanel;
 
 	public ManagerPanel(MainFrame mainFrame) {
@@ -123,6 +124,9 @@ public class ManagerPanel extends JPanel implements ActionListener {
 		eastPanel.add(moitfyBtn, gbc);
 		refash = new JButton("刷新");
 		eastPanel.add(refash, gbc);
+		chargeAllBtn = new JButton("充电");
+		chargeAllBtn.setEnabled(false);
+		eastPanel.add(chargeAllBtn, gbc);
 		exitBtn = new JButton("注销");
 		gbc.insets.bottom = 0;
 		eastPanel.add(exitBtn, gbc);
@@ -170,16 +174,22 @@ public class ManagerPanel extends JPanel implements ActionListener {
 				addBtn.setEnabled(false);
 				moitfyBtn.setEnabled(false);
 				delBtn.setEnabled(false);
+				chargeAllBtn.setEnabled(false);
 			} else {
 				addBtn.setEnabled(true);
 				moitfyBtn.setEnabled(true);
 				delBtn.setEnabled(true);
+				chargeAllBtn.setEnabled(false);
+			}
+			if (selectedIndex == 1) {// power
+				chargeAllBtn.setEnabled(true);
 			}
 		});
 		addBtn.addActionListener(this);
 		delBtn.addActionListener(this);
 		moitfyBtn.addActionListener(this);
 		refash.addActionListener(this);
+		chargeAllBtn.addActionListener(this);
 		exitBtn.addActionListener(this);
 	}
 
@@ -211,6 +221,9 @@ public class ManagerPanel extends JPanel implements ActionListener {
 		} else if (source.equals(exitBtn)) {
 			mainFrame.showPreviousPanel();
 			loginManager = null;
+		} else if (source.equals(chargeAllBtn)) {
+			PowerService.getInstance().chageAll();
+			powerTableModel.changeData(PowerService.getInstance().getAllPowers());
 		}
 	}
 

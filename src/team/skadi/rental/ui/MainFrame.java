@@ -26,7 +26,7 @@ public class MainFrame extends JFrame {
 	ManagerLoginPanel managerLoginPanel;
 	LoginPanel loginPanel;
 	HelpPanel helpPanel;
-	
+
 	private LinkedList<PanelName> panelStack;
 
 	static {
@@ -70,18 +70,18 @@ public class MainFrame extends JFrame {
 		signUpPanel = new SignUpPanel(this);
 		add(PanelName.SIGN_UP.value, signUpPanel);
 		helpPanel = new HelpPanel(this);
-		add(PanelName.HELP.value,helpPanel);
+		add(PanelName.HELP.value, helpPanel);
 		userPanel = new UserPanel(this);
 		add(PanelName.USER.value, userPanel);
 		managerPanel = new ManagerPanel(this);
 		add(PanelName.MANAGER.value, managerPanel);
 	}
 
-	public void showPanel(PanelName previous,PanelName panelName) {
+	public void showPanel(PanelName previous, PanelName panelName) {
 		cardLayout.show(getContentPane(), panelName.value);
 		panelStack.push(previous);
 	}
-	
+
 	public void showPreviousPanel() {
 		cardLayout.show(getContentPane(), panelStack.pop().value);
 	}

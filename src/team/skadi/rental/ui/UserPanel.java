@@ -230,7 +230,7 @@ public class UserPanel extends JPanel implements ActionListener {
 		rentalTable.getSelectionModel().addListSelectionListener(e -> {
 			if (rentalTable.getSelectedRow() != -1) {
 				Power power = powerTableModel.getData().get(rentalTable.getSelectedRow());
-				lentbtn.setEnabled(!power.hasStatus(Power.BORROWED | Power.NO_POWER | Power.BROKEN));
+				lentbtn.setEnabled(power.hasStatus(Power.AVAILABLE) && power.getLeft() >= 30);
 			}
 		});
 		rentalPanel.add(new JScrollPane(rentalTable), BorderLayout.CENTER);
@@ -290,6 +290,7 @@ public class UserPanel extends JPanel implements ActionListener {
 
 	private void giveBack() {
 		Power power = PowerService.getInstance().getPowerById(log.getPowerId());
+		UserService.getInstance().use(userLogin, power, Main.getRandom(power.getLeft() > 10 ? 10 : 0, power.getLeft()));
 		UserService.getInstance().giveBack(userLogin, power);
 		userPowerTableModel.clearLog();
 		changePanel(EMPTY_PANEL);
