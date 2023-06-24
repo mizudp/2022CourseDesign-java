@@ -94,6 +94,12 @@ public class ManagerPanel extends JPanel implements ActionListener {
 		powerTableModel = new PowerTableModel(BasicTableModel.MANAGER_MODE);
 		powerTable = new JTable(powerTableModel);
 		powerTable.addMouseListener(powerTableModel.new DoubleClick(mainFrame));
+		powerTable.getSelectionModel().addListSelectionListener(e -> {
+			int row = powerTable.getSelectedRow();
+			if (row != -1) {
+				moitfyBtn.setEnabled(!powerTableModel.getPower(row).hasStatus(Power.BORROWED));
+			}
+		});
 		powerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		powerTable.setRowHeight(30);
 		tabbedPane.add("移动电源列表", new JScrollPane(powerTable));
@@ -256,9 +262,11 @@ public class ManagerPanel extends JPanel implements ActionListener {
 		case SearchPanel.POWER_MODE:
 			row = powerTable.getSelectedRow();
 			if (row != -1) {
-				Power power = new PowerOption(mainFrame, OptionDialog.MODIFY_MODE, powerTableModel.getPower(row))
-						.getPower();
-				powerTableModel.setPower(row, power);
+				Power power2 = powerTableModel.getPower(row);
+				if (!power2.hasStatus(Power.BORROWED)) {
+					Power power = new PowerOption(mainFrame, OptionDialog.MODIFY_MODE, power2).getPower();
+					powerTableModel.setPower(row, power);
+				}
 			}
 			break;
 		}
@@ -271,12 +279,14 @@ public class ManagerPanel extends JPanel implements ActionListener {
 			row = userTable.getSelectedRow();
 			if (row != -1) {
 				userTableModel.removeUser(row);
+				userTableModel.changeData(ManagerService.getInstance().getAllUsers());
 			}
 			break;
 		case SearchPanel.POWER_MODE:
 			row = powerTable.getSelectedRow();
 			if (row != -1) {
 				powerTableModel.removePower(row);
+				powerTableModel.changeData(PowerService.getInstance().getAllPowers());
 			}
 			break;
 		}

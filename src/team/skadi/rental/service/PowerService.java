@@ -37,7 +37,6 @@ public class PowerService {
 		power.setId(powerId);
 		power.setSerialnum(serialnum);
 		power.setLeft(power.getLeft());
-		power.setStatus(Power.AVAILABLE);
 		pdi.updatePower(power);
 		return power;
 	}
@@ -102,6 +101,7 @@ public class PowerService {
 		}
 		power.setLeft(power.getLeft() + (power.getLeft() + amount > 100 ? 100 - power.getLeft() : amount));
 		power.removeStatus(Power.NO_POWER);
+		power.addStatus(Power.AVAILABLE);
 		pdi.updatePower(power);
 	}
 
@@ -111,7 +111,9 @@ public class PowerService {
 	public void chageAll() {
 		List<Power> allPowers = getAllPowers();
 		for (Power power : allPowers) {
-			chage(power, Main.getRandom(1, 10));
+			if (!power.hasStatus(Power.BORROWED | Power.BROKEN)) {
+				chage(power, Main.getRandom(1, 10));
+			}
 		}
 	}
 

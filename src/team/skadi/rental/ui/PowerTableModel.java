@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JTable;
 
 import team.skadi.rental.bean.Power;
+import team.skadi.rental.service.ManagerService;
 import team.skadi.rental.service.PowerService;
 import team.skadi.rental.ui.SearchPanel.SearchResult;
 
@@ -38,7 +39,8 @@ public class PowerTableModel extends BasicTableModel {
 	}
 
 	public void removePower(int rowIndex) {
-		powerList.remove(rowIndex);
+		Power power = powerList.remove(rowIndex);
+		ManagerService.getInstance().removePower(power);
 		fireTableCellUpdated(rowIndex, rowIndex);
 	}
 

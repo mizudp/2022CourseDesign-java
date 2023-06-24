@@ -78,7 +78,8 @@ public class UserTableModel extends BasicTableModel {
 	}
 
 	public void removeUser(int rowIndex) {
-		userList.remove(rowIndex);
+		User user = userList.remove(rowIndex);
+		ManagerService.getInstance().removeUser(user);
 		fireTableRowsDeleted(rowIndex, rowIndex);
 	}
 

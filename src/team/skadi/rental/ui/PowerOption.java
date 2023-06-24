@@ -57,7 +57,7 @@ public class PowerOption extends OptionDialog implements ChangeListener {
 
 		label = new JLabel("剩余电量[0,100]：", JLabel.LEFT);
 		centerPanel.add(label);
-		spinnerNumberModel = new SpinnerNumberModel(0, 0, 100, 1);
+		spinnerNumberModel = new SpinnerNumberModel(10, 0, 100, 1);
 		leftsSpinner = new JSpinner(spinnerNumberModel);
 		leftsSpinner.addChangeListener(this);
 		centerPanel.add(leftsSpinner);
@@ -116,7 +116,8 @@ public class PowerOption extends OptionDialog implements ChangeListener {
 				power = new Power();
 			}
 			power.setId(idField.getText());
-			power.setLeft((int) spinnerNumberModel.getNumber());
+			int left = (int) spinnerNumberModel.getNumber();
+			power.setLeft(left);
 			for (int i = 0, bin = 1; i < ENABLE.length; i++) {
 				if (checkBoxs.get(i).isSelected()) {
 					power.addStatus(bin);
@@ -125,7 +126,14 @@ public class PowerOption extends OptionDialog implements ChangeListener {
 				}
 				bin <<= 1;
 			}
+			if (left == 0) {
+				power.addStatus(Power.NO_POWER);
+				power.removeStatus(Power.AVAILABLE);
+			} else {
+				checkBoxs.get(2).setSelected(false);
+			}
 		}
+		
 		if (mode == ADD_MODE) {
 			ManagerService.getInstance().addPower(power);
 		} else {
