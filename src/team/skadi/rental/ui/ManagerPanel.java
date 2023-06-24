@@ -95,7 +95,7 @@ public class ManagerPanel extends JPanel implements ActionListener {
 		powerTable.addMouseListener(powerTableModel.new DoubleClick(mainFrame));
 		powerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		powerTable.setRowHeight(30);
-		tabbedPane.add("充电宝列表", new JScrollPane(powerTable));
+		tabbedPane.add("移动电源列表", new JScrollPane(powerTable));
 
 		logTableModel = new LogTableModel(LogTableModel.MANAGER_MODE);
 		logTable = new JTable(logTableModel);

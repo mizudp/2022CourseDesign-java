@@ -26,9 +26,9 @@ public class LogTableModel extends BasicTableModel {
 		this.logList = new ArrayList<>();
 		this.mode = mode;
 		if (mode == USER_MODE) {
-			title = new String[] { "充电宝id", "租借时间", "归还时间", "内容" };
+			title = new String[] { "移动电源id", "租借时间", "归还时间", "内容" };
 		} else {
-			title = new String[] { "用户id", "充电宝id", "租借时间", "归还时间", "内容" };
+			title = new String[] { "用户id", "移动电源id", "租借时间", "归还时间", "内容" };
 		}
 	}
 

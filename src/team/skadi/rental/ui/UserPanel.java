@@ -251,10 +251,14 @@ public class UserPanel extends JPanel implements ActionListener {
 
 		userPowerTableModel = new UserPowerTableModel(e -> {
 			int timeSpan = DateUtil.getTimeSpan(log.getStartDate(), System.currentTimeMillis());
+			if (timeSpan == 0) {
+				timeSpan++;
+			}
 			double cost = Main.getCost(timeSpan);
 			if (userLogin.getBalance() > cost) {
-				if (JOptionPane.showConfirmDialog(mainFrame, String.format("你确定要归还该移动电源吗？\n使用时间：%d小时，需要付费： %.2f元",
-						timeSpan, cost)) == JOptionPane.YES_OPTION) {
+				if (JOptionPane.showConfirmDialog(mainFrame,
+						String.format("你确定要归还该移动电源吗？\n(不满一小时按一小时收费哦)\n使用时间：%d小时，需要付费： %.2f元", timeSpan,
+								cost)) == JOptionPane.YES_OPTION) {
 					giveBack();
 				}
 			} else {

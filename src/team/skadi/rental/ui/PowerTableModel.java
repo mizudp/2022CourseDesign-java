@@ -14,7 +14,7 @@ import team.skadi.rental.ui.SearchPanel.SearchResult;
 @SuppressWarnings("serial")
 public class PowerTableModel extends BasicTableModel {
 
-	private String[] title = { "充电宝id", "剩余电量", "租借状态" };
+	private String[] title = { "移动电源id", "剩余电量", "租借状态" };
 	private List<Power> powerList;
 
 	public PowerTableModel(int mode) {

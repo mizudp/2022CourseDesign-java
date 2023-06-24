@@ -120,6 +120,8 @@ public class PowerOption extends OptionDialog implements ChangeListener {
 			for (int i = 0, bin = 1; i < ENABLE.length; i++) {
 				if (checkBoxs.get(i).isSelected()) {
 					power.addStatus(bin);
+				} else {
+					power.removeStatus(bin);
 				}
 				bin <<= 1;
 			}

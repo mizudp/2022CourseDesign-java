@@ -18,7 +18,7 @@ import team.skadi.rental.utils.DateUtil;
 @SuppressWarnings("serial")
 public class UserPowerTableModel extends AbstractTableModel {
 
-	private String[] title = { "充电宝id", "租借时间", "累计时长(小时)", "预计收费(元)", "选项" };
+	private String[] title = { "移动电源id", "租借时间", "累计时长(小时)", "预计收费(元)", "选项" };
 	private Log log;
 	private ActionListener l;
 
@@ -85,7 +85,7 @@ public class UserPowerTableModel extends AbstractTableModel {
 		case 3:
 			return Main.getCost(timeSpan);
 		case 4:
-			final JButton optionBtn = new JButton("归还该充电宝");
+			final JButton optionBtn = new JButton("归还该移动电源");
 			optionBtn.addActionListener(l);
 			return optionBtn;
 		default:
