@@ -11,6 +11,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -23,7 +24,6 @@ import team.skadi.rental.bean.User;
 import team.skadi.rental.service.LogService;
 import team.skadi.rental.service.ManagerService;
 import team.skadi.rental.service.PowerService;
-import team.skadi.rental.ui.MainFrame.PanelName;
 import team.skadi.rental.ui.SearchPanel.SearchResult;
 
 @SuppressWarnings("serial")
@@ -207,14 +207,14 @@ public class ManagerPanel extends JPanel implements ActionListener {
 		} else if (source.equals(moitfyBtn)) {
 			onMoitfyBtnClick();
 		} else if (source.equals(refash)) {
-			onSearchBtnClick();
+			onRefashBtnClick();
 		} else if (source.equals(exitBtn)) {
-			mainFrame.showPanel(PanelName.MANAGER_LOGIN);
+			mainFrame.showPreviousPanel();
 			loginManager = null;
 		}
 	}
 
-	private void onSearchBtnClick() {
+	private void onRefashBtnClick() {
 		switch (searchPanel.getSearchMode()) {
 		case SearchPanel.USER_MODE:
 			userTableModel.changeData(ManagerService.getInstance().getAllUsers());
@@ -227,6 +227,7 @@ public class ManagerPanel extends JPanel implements ActionListener {
 			break;
 		}
 		searchPanel.close();
+		JOptionPane.showMessageDialog(mainFrame, "刷新成功！");
 	}
 
 	private void onMoitfyBtnClick() {
@@ -235,8 +236,7 @@ public class ManagerPanel extends JPanel implements ActionListener {
 		case SearchPanel.USER_MODE:
 			row = userTable.getSelectedRow();
 			if (row != -1) {
-				User user = new UserOption(mainFrame, OptionDialog.MODIFY_MODE, userTableModel.getUser(row))
-						.getUser();
+				User user = new UserOption(mainFrame, OptionDialog.MODIFY_MODE, userTableModel.getUser(row)).getUser();
 				userTableModel.setUser(row, user);
 			}
 			break;

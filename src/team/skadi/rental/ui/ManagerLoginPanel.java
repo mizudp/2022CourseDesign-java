@@ -97,7 +97,7 @@ public class ManagerLoginPanel extends JPanel implements ActionListener {
 		if (e.getSource().equals(loginBtn)) {
 			login();
 		} else {// returnBtn
-			mainFrame.showPanel(PanelName.LOGIN);
+			mainFrame.showPreviousPanel();
 		}
 	}
 
@@ -120,7 +120,7 @@ public class ManagerLoginPanel extends JPanel implements ActionListener {
 		}
 		mainFrame.managerPanel.setLoginManager(manager);
 		JOptionPane.showMessageDialog(mainFrame, "登录成功，欢迎你，" + manager.getName());
-		mainFrame.showPanel(PanelName.MANAGER);
+		mainFrame.showPanel(PanelName.MANAGER_LOGIN, PanelName.MANAGER);
 		passwordField.setText("");
 	}
 

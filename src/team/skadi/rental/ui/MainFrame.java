@@ -6,6 +6,7 @@ package team.skadi.rental.ui;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
@@ -24,6 +25,9 @@ public class MainFrame extends JFrame {
 	SignUpPanel signUpPanel;
 	ManagerLoginPanel managerLoginPanel;
 	LoginPanel loginPanel;
+	HelpPanel helpPanel;
+	
+	private LinkedList<PanelName> panelStack;
 
 	static {
 		FRAME_MIN_HEIGHT = (int) (FRAME_HEIGHT * 0.85);
@@ -31,7 +35,8 @@ public class MainFrame extends JFrame {
 	}
 
 	enum PanelName {
-		LOGIN("login"), MANAGER_LOGIN("manager login"), SIGN_UP("signUp"), USER("user"), MANAGER("manager");
+		LOGIN("login"), MANAGER_LOGIN("manager login"), SIGN_UP("signUp"), USER("user"), MANAGER("manager"),
+		HELP("help");
 
 		String value;
 
@@ -43,6 +48,7 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() {
 		super("德莱联盟电源租凭系统");
+		panelStack = new LinkedList<>();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = toolkit.getScreenSize();
@@ -63,13 +69,20 @@ public class MainFrame extends JFrame {
 		add(PanelName.MANAGER_LOGIN.value, managerLoginPanel);
 		signUpPanel = new SignUpPanel(this);
 		add(PanelName.SIGN_UP.value, signUpPanel);
+		helpPanel = new HelpPanel(this);
+		add(PanelName.HELP.value,helpPanel);
 		userPanel = new UserPanel(this);
 		add(PanelName.USER.value, userPanel);
 		managerPanel = new ManagerPanel(this);
 		add(PanelName.MANAGER.value, managerPanel);
 	}
 
-	public void showPanel(PanelName panelName) {
+	public void showPanel(PanelName previous,PanelName panelName) {
 		cardLayout.show(getContentPane(), panelName.value);
+		panelStack.push(previous);
+	}
+	
+	public void showPreviousPanel() {
+		cardLayout.show(getContentPane(), panelStack.pop().value);
 	}
 }

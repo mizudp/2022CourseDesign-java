@@ -51,6 +51,8 @@ public class UserPanel extends JPanel implements ActionListener {
 	private JButton logBtn;
 	private JButton rechargeBtn;
 	private JButton modifyBtn;
+	private JButton refashBtn;
+	private JButton helpBtn;
 	private JButton exitBtn;
 	private JPanel centerPanel;
 	private JPanel innerPanel;
@@ -58,10 +60,13 @@ public class UserPanel extends JPanel implements ActionListener {
 
 	private JTable logTable;
 	private LogTableModel logTableModel;
-	private JTable rentalTable;
 	private UserPowerTableModel userPowerTableModel;
 	private JTable userPowerTable;
 	private PowerTableModel powerTableModel;
+	private JTable rentalTable;
+
+	private SearchPanel logSearchPanel;
+	private SearchPanel powerSearchPanel;
 
 	private CardLayout userLayout;
 
@@ -130,8 +135,11 @@ public class UserPanel extends JPanel implements ActionListener {
 		modifyBtn = new JButton("修改个人信息");
 		btnPanel.add(modifyBtn, gbc);
 
-		JButton refashBtn = new JButton("刷新");
+		refashBtn = new JButton("刷新");
 		btnPanel.add(refashBtn, gbc);
+
+		helpBtn = new JButton("帮助");
+		btnPanel.add(helpBtn, gbc);
 
 		exitBtn = new JButton("退出系统");
 		btnPanel.add(exitBtn, gbc);
@@ -164,8 +172,8 @@ public class UserPanel extends JPanel implements ActionListener {
 
 	private JPanel getLogPanel() {
 		JPanel logPanel = new JPanel(new BorderLayout());
-		SearchPanel searchPanel = new SearchPanel(mainFrame, SearchPanel.LOG_MODE);
-		searchPanel.addOnClickListener(new SearchPanel.OnClickListener() {
+		logSearchPanel = new SearchPanel(mainFrame, SearchPanel.LOG_MODE);
+		logSearchPanel.addOnClickListener(new SearchPanel.OnClickListener() {
 
 			@Override
 			public SearchResult onSearchButtonClick(int searchMode, int searchIndex, String content) {
@@ -177,7 +185,7 @@ public class UserPanel extends JPanel implements ActionListener {
 				logTableModel.changeData(LogService.queryLogs(userLogin));
 			}
 		});
-		logPanel.add(searchPanel, BorderLayout.NORTH);
+		logPanel.add(logSearchPanel, BorderLayout.NORTH);
 		logTableModel = new LogTableModel(LogTableModel.USER_MODE);
 		logTable = new JTable(logTableModel);
 		logTableModel.setPreferredWidth(logTable.getColumnModel());
@@ -195,8 +203,8 @@ public class UserPanel extends JPanel implements ActionListener {
 		JLabel label = new JLabel("请选择您想借的移动电源：");
 		label.setFont(Main.MIDDLE_FONT);
 		northPanel.add(label);
-		SearchPanel searchPanel = new SearchPanel(mainFrame, SearchPanel.POWER_MODE);
-		searchPanel.addOnClickListener(new SearchPanel.OnClickListener() {
+		powerSearchPanel = new SearchPanel(mainFrame, SearchPanel.POWER_MODE);
+		powerSearchPanel.addOnClickListener(new SearchPanel.OnClickListener() {
 
 			@Override
 			public SearchResult onSearchButtonClick(int searchMode, int searchIndex, String content) {
@@ -208,7 +216,7 @@ public class UserPanel extends JPanel implements ActionListener {
 				powerTableModel.changeData(PowerService.getInstance().getAllPowers());
 			}
 		});
-		northPanel.add(searchPanel);
+		northPanel.add(powerSearchPanel);
 
 		rentalPanel.add(northPanel, BorderLayout.NORTH);
 
@@ -326,6 +334,8 @@ public class UserPanel extends JPanel implements ActionListener {
 		logBtn.addActionListener(this);
 		rechargeBtn.addActionListener(this);
 		modifyBtn.addActionListener(this);
+		refashBtn.addActionListener(this);
+		helpBtn.addActionListener(this);
 		exitBtn.addActionListener(this);
 
 		lentbtn.addActionListener(this);
@@ -349,12 +359,25 @@ public class UserPanel extends JPanel implements ActionListener {
 		} else if (obj.equals(modifyBtn)) {
 			modifyUserInformation();
 		} else if (obj.equals(exitBtn)) {
-			mainFrame.showPanel(PanelName.LOGIN);
+			mainFrame.showPreviousPanel();
 			userLogin = null;
 		} else if (obj.equals(lentbtn)) {
 			lentPower();
+		} else if (obj.equals(refashBtn)) {
+			refash();
+		} else if (obj.equals(helpBtn)) {
+			mainFrame.showPanel(PanelName.USER, PanelName.HELP);
 		}
 
+	}
+
+	private void refash() {
+		userPowerTableModel.setLog(LogService.getLog(userLogin));
+		powerTableModel.changeData(PowerService.getInstance().getAllPowers());
+		logTableModel.changeData(LogService.queryLogs(userLogin));
+		logSearchPanel.close();
+		powerSearchPanel.close();
+		JOptionPane.showMessageDialog(mainFrame, "刷新成功！");
 	}
 
 	private void lentPower() {
@@ -380,7 +403,7 @@ public class UserPanel extends JPanel implements ActionListener {
 				int result = new ModifyInformation(mainFrame, userLogin).getResult();
 				if (result == ModifyInformation.MODIFY_OPTION) {
 					JOptionPane.showMessageDialog(mainFrame, "修改成功，请重新登录！");
-					mainFrame.showPanel(PanelName.LOGIN);
+					mainFrame.showPreviousPanel();
 				}
 			} else {
 				JOptionPane.showMessageDialog(mainFrame, "密码错误！");

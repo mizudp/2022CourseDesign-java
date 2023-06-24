@@ -1,5 +1,7 @@
 package team.skadi.rental.ui;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -30,6 +32,7 @@ public class SignUpPanel extends JPanel implements ActionListener {
 	private JPasswordField passwordField2;
 	private JButton finishBtn;
 	private JButton returnBtn;
+	private ImageButton helpBtn;
 
 	public SignUpPanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -38,7 +41,8 @@ public class SignUpPanel extends JPanel implements ActionListener {
 	}
 
 	private void bulidLayout() {
-		setLayout(new GridBagLayout());
+		setLayout(new BorderLayout());
+		JPanel centerPanel = new JPanel(new GridBagLayout());
 		JLabel label;
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -47,41 +51,41 @@ public class SignUpPanel extends JPanel implements ActionListener {
 		gbc.gridwidth = 2;
 		label = new JLabel("欢迎注册", JLabel.CENTER);
 		label.setFont(Main.TITLE_FONT);
-		add(label, gbc);
+		centerPanel.add(label, gbc);
 
 		gbc.gridy++;
 		gbc.gridwidth = 1;
 		gbc.weightx = 0;
 		gbc.insets.top = 34;
 		label = new JLabel("用户名：", JLabel.CENTER);
-		add(label, gbc);
+		centerPanel.add(label, gbc);
 		nameField = new JTextField(20);
-		add(nameField, gbc);
+		centerPanel.add(nameField, gbc);
 
 		gbc.gridy++;
 		gbc.insets.top = 24;
 		label = new JLabel("电话号码：", JLabel.CENTER);
-		add(label, gbc);
+		centerPanel.add(label, gbc);
 		phoneNumField = new JTextField(20);
-		add(phoneNumField, gbc);
+		centerPanel.add(phoneNumField, gbc);
 
 		gbc.gridy++;
 		label = new JLabel("邮箱：", JLabel.CENTER);
-		add(label, gbc);
+		centerPanel.add(label, gbc);
 		emailField = new JTextField(20);
-		add(emailField, gbc);
+		centerPanel.add(emailField, gbc);
 
 		gbc.gridy++;
 		label = new JLabel("输入密码：", JLabel.CENTER);
-		add(label, gbc);
+		centerPanel.add(label, gbc);
 		passwordField = new JPasswordField(20);
-		add(passwordField, gbc);
+		centerPanel.add(passwordField, gbc);
 
 		gbc.gridy++;
 		label = new JLabel("重复密码：");
-		add(label, gbc);
+		centerPanel.add(label, gbc);
 		passwordField2 = new JPasswordField(20);
-		add(passwordField2, gbc);
+		centerPanel.add(passwordField2, gbc);
 
 		gbc.gridy++;
 		gbc.gridwidth = 2;
@@ -97,7 +101,15 @@ public class SignUpPanel extends JPanel implements ActionListener {
 		gbc2.insets.set(0, 19, 0, 38);
 		returnBtn = new JButton("返回");
 		btnPanel.add(returnBtn, gbc2);
-		add(btnPanel, gbc);
+		centerPanel.add(btnPanel, gbc);
+
+		add(centerPanel, BorderLayout.CENTER);
+
+		JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		helpBtn = new ImageButton("帮助", "res/help.png");
+		southPanel.add(helpBtn);
+		add(southPanel, BorderLayout.SOUTH);
+
 	}
 
 	private void addListener() {
@@ -118,14 +130,18 @@ public class SignUpPanel extends JPanel implements ActionListener {
 		passwordField2.addKeyListener(passwordKeyAdapter);
 		returnBtn.addActionListener(this);
 		finishBtn.addActionListener(this);
+		helpBtn.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(finishBtn)) {
+		Object source = e.getSource();
+		if (source.equals(finishBtn)) {
 			finish();
-		} else {// returnBtn
-			mainFrame.showPanel(PanelName.LOGIN);
+		} else if (source.equals(returnBtn)) {// returnBtn
+			mainFrame.showPreviousPanel();
+		} else if (source.equals(helpBtn)) {
+			mainFrame.showPanel(PanelName.SIGN_UP, PanelName.HELP);
 		}
 	}
 
@@ -153,7 +169,7 @@ public class SignUpPanel extends JPanel implements ActionListener {
 		}
 		User user = UserService.getInstance().signIn(name, pwd2, phoneNum, email);
 		JOptionPane.showMessageDialog(mainFrame, "注册成功，欢迎使用本电源租凭系统！\n你的账户是：" + user.getId() + "。请牢记你的登录账号和密码");
-		mainFrame.showPanel(PanelName.LOGIN);
+		mainFrame.showPreviousPanel();
 		nameField.setText("");
 		phoneNumField.setText("");
 		emailField.setText("");

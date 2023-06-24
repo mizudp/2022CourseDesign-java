@@ -32,6 +32,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 	private JButton signUpBtn;
 	private ImageButton exitBtn;
 	private ImageButton managerBtn;
+	private ImageButton helpBtn;
 
 	public LoginPanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -88,6 +89,10 @@ public class LoginPanel extends JPanel implements ActionListener {
 
 		JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
 
+		helpBtn = new ImageButton("帮助", "res/help.png");
+		helpBtn.setTextPosition(JButton.CENTER, JButton.BOTTOM);
+		southPanel.add(helpBtn);
+
 		managerBtn = new ImageButton("管理员入口", "res/manager.png");
 		managerBtn.setTextPosition(JButton.CENTER, JButton.BOTTOM);
 		southPanel.add(managerBtn);
@@ -118,6 +123,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		signUpBtn.addActionListener(this);
 		exitBtn.addActionListener(this);
 		managerBtn.addActionListener(this);
+		helpBtn.addActionListener(this);
 	}
 
 	@Override
@@ -126,11 +132,13 @@ public class LoginPanel extends JPanel implements ActionListener {
 		if (source.equals(loginBtn)) {
 			login();
 		} else if (source.equals(signUpBtn)) {
-			mainFrame.showPanel(PanelName.SIGN_UP);
+			mainFrame.showPanel(PanelName.LOGIN, PanelName.SIGN_UP);
 		} else if (source.equals(exitBtn)) {
 			mainFrame.dispose();
 		} else if (source.equals(managerBtn)) {
-			mainFrame.showPanel(PanelName.MANAGER_LOGIN);
+			mainFrame.showPanel(PanelName.LOGIN, PanelName.MANAGER_LOGIN);
+		} else if (source.equals(helpBtn)) {
+			mainFrame.showPanel(PanelName.LOGIN, PanelName.HELP);
 		}
 	}
 
@@ -153,7 +161,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		}
 		mainFrame.userPanel.setUserLogin(user);
 		JOptionPane.showMessageDialog(mainFrame, "登录成功，欢迎你，" + user.getName());
-		mainFrame.showPanel(PanelName.USER);
+		mainFrame.showPanel(PanelName.LOGIN, PanelName.USER);
 		passwordField.setText("");
 	}
 
