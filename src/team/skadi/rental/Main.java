@@ -47,7 +47,7 @@ public final class Main {
 	 * 
 	 * @param min 最小值
 	 * @param max 最大值
-	 * @return 最小值到最大值之间的随机数 [max,min]
+	 * @return 最小值到最大值之间的随机数 [min,max]
 	 */
 	public static final int getRandom(int min, int max) {
 		return (int) (Math.random() * (max - min + 1) + min);
