@@ -127,6 +127,12 @@ public class UserOption extends OptionDialog {
 				option = NOT_MODIFY_OPTION;
 				return true;
 			}
+			if (mode == ADD_MODE
+					&& (name.equals("") || (phoneNumber.equals("") && email.equals("")) || password.equals(""))) {
+				option = NOT_MODIFY_OPTION;
+				user = null;
+				return true;
+			}
 			user.setName(name);
 			user.setPhoneNumber(phoneNumber);
 			user.setEmail(email);

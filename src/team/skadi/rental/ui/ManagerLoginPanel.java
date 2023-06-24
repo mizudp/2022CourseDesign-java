@@ -102,18 +102,18 @@ public class ManagerLoginPanel extends JPanel implements ActionListener {
 	}
 
 	private void login() {
-//		String id = idField.getText();
-//		if (id.equals("")) {
-//			JOptionPane.showMessageDialog(mainFrame, "你还没有输入你的工号！");
-//			return;
-//		}
-//		String password = new String(passwordField.getPassword());
-//		if (password.equals("")) {
-//			JOptionPane.showMessageDialog(mainFrame, "你还没有输入你的密码！");
-//			return;
-//		}
-//		Manager manager = ManagerService.getInstance().login(id, password);
-		Manager manager = ManagerService.getInstance().login("123456X", "123456");
+		String id = idField.getText();
+		if (id.equals("")) {
+			JOptionPane.showMessageDialog(mainFrame, "你还没有输入你的工号！");
+			return;
+		}
+		String password = new String(passwordField.getPassword());
+		if (password.equals("")) {
+			JOptionPane.showMessageDialog(mainFrame, "你还没有输入你的密码！");
+			return;
+		}
+		Manager manager = ManagerService.getInstance().login(id, password);
+//		Manager manager = ManagerService.getInstance().login("123456X", "123456");
 		if (manager == null) {
 			JOptionPane.showMessageDialog(mainFrame, "工号或者密码错误！");
 			return;

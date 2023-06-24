@@ -164,7 +164,17 @@ public class ManagerPanel extends JPanel implements ActionListener {
 
 	private void addListener() {
 		tabbedPane.addChangeListener(e -> {
-			searchPanel.setSearchMode(tabbedPane.getSelectedIndex());
+			int selectedIndex = tabbedPane.getSelectedIndex();
+			searchPanel.setSearchMode(selectedIndex);
+			if (selectedIndex == 2) { // log
+				addBtn.setEnabled(false);
+				moitfyBtn.setEnabled(false);
+				delBtn.setEnabled(false);
+			} else {
+				addBtn.setEnabled(true);
+				moitfyBtn.setEnabled(true);
+				delBtn.setEnabled(true);
+			}
 		});
 		addBtn.addActionListener(this);
 		delBtn.addActionListener(this);
@@ -191,48 +201,88 @@ public class ManagerPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if (source.equals(addBtn)) {
-			switch (searchPanel.getSearchMode()) {
-			case SearchPanel.USER_MODE:
-				User user = new UserOption(mainFrame).getUser();
-				userTableModel.addUser(user);
-				break;
-			case SearchPanel.POWER_MODE:
-				Power power = new PowerOption(mainFrame).getPower();
-				powerTableModel.addPower(power);
-				break;
-			}
+			onAddBtnClick();
 		} else if (source.equals(delBtn)) {
-			int row;
-			switch (searchPanel.getSearchMode()) {
-			case SearchPanel.USER_MODE:
-				row = userTable.getSelectedRow();
-				if (row != -1) {
-					userTableModel.removeUser(row);
-				}
-				break;
-			case SearchPanel.POWER_MODE:
-				row = powerTable.getSelectedRow();
-				if (row != -1) {
-					powerTableModel.removePower(row);
-				}
-				break;
-			}
+			onDelBtnClick();
+		} else if (source.equals(moitfyBtn)) {
+			onMoitfyBtnClick();
 		} else if (source.equals(refash)) {
-			switch (searchPanel.getSearchMode()) {
-			case SearchPanel.USER_MODE:
-				userTableModel.changeData(ManagerService.getInstance().getAllUsers());
-				break;
-			case SearchPanel.POWER_MODE:
-				powerTableModel.changeData(PowerService.getInstance().getAllPowers());
-				break;
-			case SearchPanel.LOG_MODE:
-				logTableModel.changeData(LogService.getAllLogs());
-				break;
-			}
-			searchPanel.close();
+			onSearchBtnClick();
 		} else if (source.equals(exitBtn)) {
 			mainFrame.showPanel(PanelName.MANAGER_LOGIN);
 			loginManager = null;
+		}
+	}
+
+	private void onSearchBtnClick() {
+		switch (searchPanel.getSearchMode()) {
+		case SearchPanel.USER_MODE:
+			userTableModel.changeData(ManagerService.getInstance().getAllUsers());
+			break;
+		case SearchPanel.POWER_MODE:
+			powerTableModel.changeData(PowerService.getInstance().getAllPowers());
+			break;
+		case SearchPanel.LOG_MODE:
+			logTableModel.changeData(LogService.getAllLogs());
+			break;
+		}
+		searchPanel.close();
+	}
+
+	private void onMoitfyBtnClick() {
+		int row;
+		switch (searchPanel.getSearchMode()) {
+		case SearchPanel.USER_MODE:
+			row = userTable.getSelectedRow();
+			if (row != -1) {
+				User user = new UserOption(mainFrame, OptionDialog.MODIFY_MODE, userTableModel.getUser(row))
+						.getUser();
+				userTableModel.setUser(row, user);
+			}
+			break;
+		case SearchPanel.POWER_MODE:
+			row = powerTable.getSelectedRow();
+			if (row != -1) {
+				Power power = new PowerOption(mainFrame, OptionDialog.MODIFY_MODE, powerTableModel.getPower(row))
+						.getPower();
+				powerTableModel.setPower(row, power);
+			}
+			break;
+		}
+	}
+
+	private void onDelBtnClick() {
+		int row;
+		switch (searchPanel.getSearchMode()) {
+		case SearchPanel.USER_MODE:
+			row = userTable.getSelectedRow();
+			if (row != -1) {
+				userTableModel.removeUser(row);
+			}
+			break;
+		case SearchPanel.POWER_MODE:
+			row = powerTable.getSelectedRow();
+			if (row != -1) {
+				powerTableModel.removePower(row);
+			}
+			break;
+		}
+	}
+
+	private void onAddBtnClick() {
+		switch (searchPanel.getSearchMode()) {
+		case SearchPanel.USER_MODE:
+			User user = new UserOption(mainFrame).getUser();
+			if (user != null) {
+				userTableModel.addUser(user);
+			}
+			break;
+		case SearchPanel.POWER_MODE:
+			Power power = new PowerOption(mainFrame).getPower();
+			if (power != null) {
+				powerTableModel.addPower(power);
+			}
+			break;
 		}
 	}
 

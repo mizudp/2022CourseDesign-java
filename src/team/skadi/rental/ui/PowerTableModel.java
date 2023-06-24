@@ -42,6 +42,15 @@ public class PowerTableModel extends BasicTableModel {
 		fireTableCellUpdated(rowIndex, rowIndex);
 	}
 
+	public void setPower(int rowIndex, Power power) {
+		powerList.set(rowIndex, power);
+		fireTableRowsUpdated(rowIndex, rowIndex);
+	}
+
+	public Power getPower(int rowIndex) {
+		return powerList.get(rowIndex);
+	}
+
 	/**
 	 * 
 	 * @param searchIndex 当前的子选择模式

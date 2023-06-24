@@ -244,14 +244,22 @@ public class UserPanel extends JPanel implements ActionListener {
 		userPowerTableModel = new UserPowerTableModel(e -> {
 			int timeSpan = DateUtil.getTimeSpan(log.getStartDate(), System.currentTimeMillis());
 			double cost = Main.getCost(timeSpan);
-			if (JOptionPane.showConfirmDialog(mainFrame,
-					String.format("你确定要归还该移动电源吗？\n使用时间：%d小时，需要付费： %.2f元", timeSpan, cost)) == JOptionPane.YES_OPTION) {
-				Power power = PowerService.getInstance().getPowerById(log.getPowerId());
-				UserService.getInstance().giveBack(userLogin, power);
-				userPowerTableModel.clearLog();
-				changePanel(EMPTY_PANEL);
-				log = null;
-				powerTableModel.changeData(PowerService.getInstance().getAllPowers());
+			if (userLogin.getBalance() > cost) {
+				if (JOptionPane.showConfirmDialog(mainFrame, String.format("你确定要归还该移动电源吗？\n使用时间：%d小时，需要付费： %.2f元",
+						timeSpan, cost)) == JOptionPane.YES_OPTION) {
+					giveBack();
+				}
+			} else {
+				double leftBalance = userLogin.getBalance() - cost;
+				if (leftBalance >= -10) {
+					if (JOptionPane.showConfirmDialog(mainFrame, String.format(
+							"你的账户余额为%.2f。使用时长：%d小时，还该移动电源需要花费%.2f元。\n归还之后你的账户余额为%.2f\n如果账户余额小于0元每天扣除10点信用分。负面影响请看帮助页面。",
+							userLogin.getBalance(), timeSpan, cost, leftBalance)) == JOptionPane.YES_OPTION) {
+						giveBack();
+					}
+				} else {
+					JOptionPane.showMessageDialog(mainFrame, "余额不足！");
+				}
 			}
 		});
 		userPowerTable = new JTable(userPowerTableModel);
@@ -266,6 +274,16 @@ public class UserPanel extends JPanel implements ActionListener {
 
 		rentalPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		return rentalPanel;
+	}
+
+	private void giveBack() {
+		Power power = PowerService.getInstance().getPowerById(log.getPowerId());
+		UserService.getInstance().giveBack(userLogin, power);
+		userPowerTableModel.clearLog();
+		changePanel(EMPTY_PANEL);
+		log = null;
+		powerTableModel.changeData(PowerService.getInstance().getAllPowers());
+		logTableModel.changeData(LogService.getAllLogs());
 	}
 
 	public void setUserLogin(User userLogin) {
@@ -327,7 +345,7 @@ public class UserPanel extends JPanel implements ActionListener {
 		} else if (obj.equals(logBtn)) {
 			changePanel(LOG_PANEL);
 		} else if (obj.equals(rechargeBtn)) {
-			recharge();
+			rechargeBalance();
 		} else if (obj.equals(modifyBtn)) {
 			modifyUserInformation();
 		} else if (obj.equals(exitBtn)) {
@@ -340,6 +358,10 @@ public class UserPanel extends JPanel implements ActionListener {
 	}
 
 	private void lentPower() {
+		if (userLogin.getBalance() < -10 || userLogin.getCredit() < 50) {
+			JOptionPane.showInternalMessageDialog(mainFrame, "租借失败，余额或信用分不足！");
+			return;
+		}
 		Power power = powerTableModel.getData().get(rentalTable.getSelectedRow());
 		if (UserService.getInstance().borrow(userLogin, power)) {
 			JOptionPane.showMessageDialog(mainFrame, "租借" + power.getId() + "成功！");
@@ -366,7 +388,7 @@ public class UserPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	private void recharge() {
+	private void rechargeBalance() {
 		String input = JOptionPane.showInputDialog(mainFrame, "请输入你要充值的金额：");
 		if (input != null && !input.equals("")) {
 			try {

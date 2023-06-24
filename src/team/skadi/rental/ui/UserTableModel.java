@@ -82,6 +82,15 @@ public class UserTableModel extends BasicTableModel {
 		fireTableRowsDeleted(rowIndex, rowIndex);
 	}
 
+	public User getUser(int rowIndex) {
+		return userList.get(rowIndex);
+	}
+
+	public void setUser(int rowIndex, User user) {
+		userList.set(rowIndex, user);
+		fireTableRowsUpdated(rowIndex, rowIndex);
+	}
+
 	@Override
 	public int getRowCount() {
 		return userList.size();

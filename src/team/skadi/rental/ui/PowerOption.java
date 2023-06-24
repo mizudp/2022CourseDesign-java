@@ -103,7 +103,7 @@ public class PowerOption extends OptionDialog implements ChangeListener {
 			}
 		}
 	}
-	
+
 	public Power getPower() {
 		setVisible(true);
 		return power;
@@ -124,7 +124,11 @@ public class PowerOption extends OptionDialog implements ChangeListener {
 				bin <<= 1;
 			}
 		}
-		ManagerService.getInstance().modifyPower(power);
+		if (mode == ADD_MODE) {
+			ManagerService.getInstance().addPower(power);
+		} else {
+			ManagerService.getInstance().modifyPower(power);
+		}
 		option = MODIFY_OPTION;
 		return true;
 	}

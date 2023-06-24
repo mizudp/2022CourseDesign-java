@@ -135,18 +135,18 @@ public class LoginPanel extends JPanel implements ActionListener {
 	}
 
 	private void login() {
-//		String account = accounTextField.getText();
-//		String password = new String(passwordField.getPassword());
-//		if (account.equals("")) {
-//			JOptionPane.showMessageDialog(mainFrame, "你还没有输入账号！");
-//			return;
-//		}
-//		if (password.equals("")) {
-//			JOptionPane.showMessageDialog(mainFrame, "你还没有输入密码！");
-//			return;
-//		}
-		User user = UserService.getInstance().login("000001", "123456");
-//		User user = UserService.getInstance().login(account, password);
+		String account = accounTextField.getText();
+		String password = new String(passwordField.getPassword());
+		if (account.equals("")) {
+			JOptionPane.showMessageDialog(mainFrame, "你还没有输入账号！");
+			return;
+		}
+		if (password.equals("")) {
+			JOptionPane.showMessageDialog(mainFrame, "你还没有输入密码！");
+			return;
+		}
+//		User user = UserService.getInstance().login("000001", "123456");
+		User user = UserService.getInstance().login(account, password);
 		if (user == null) {
 			JOptionPane.showMessageDialog(mainFrame, "账号或者密码错误！");
 			return;
