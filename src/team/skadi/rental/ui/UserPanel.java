@@ -297,6 +297,7 @@ public class UserPanel extends JPanel implements ActionListener {
 		log = null;
 		powerTableModel.changeData(PowerService.getInstance().getAllPowers());
 		logTableModel.changeData(LogService.getAllLogs());
+		updateLabel();
 	}
 
 	public void setUserLogin(User userLogin) {

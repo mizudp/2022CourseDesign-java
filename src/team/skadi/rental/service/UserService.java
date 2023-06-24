@@ -99,6 +99,9 @@ public class UserService {
 			}
 			PowerService.getInstance().modify(power);
 			int timeSpan = LogService.addReturnLog(log);
+			if (timeSpan == 0) {
+				timeSpan++;
+			}
 			userLogin.setBalance(userLogin.getBalance() - Main.getCost(timeSpan));
 			UserService.getInstance().modify(userLogin);
 			return true;
