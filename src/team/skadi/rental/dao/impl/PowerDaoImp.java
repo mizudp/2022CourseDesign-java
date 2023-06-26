@@ -14,26 +14,6 @@ import team.skadi.rental.utils.DBUtil;
 public class PowerDaoImp implements PowerDao {
 
 	@Override
-	public List<Power> findPowersByStatus(int status) {
-		Connection connection = DBUtil.getConnection();
-		String sql = "SELECT * FROM powers WHERE status=?;";
-		PreparedStatement stat = null;
-		ResultSet rs = null;
-		List<Power> powers = null;
-		try {
-			stat = connection.prepareStatement(sql);
-			stat.setInt(1, status);
-			rs = stat.executeQuery();// 执行SQL语句
-			powers = getlist(rs);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.closeAll(connection, stat, rs);
-		}
-		return powers;
-	}
-
-	@Override
 	public List<Power> findPowersByPowerLeft(int gtLeft) {
 		Connection connection = DBUtil.getConnection();
 		String sql = "SELECT * FROM powers WHERE `left` > ?;";

@@ -1,5 +1,6 @@
 package team.skadi.rental.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import team.skadi.rental.Main;
@@ -57,7 +58,14 @@ public class PowerService {
 	 * @return 满足条件的充电宝
 	 */
 	public List<Power> getPowersByStatus(int status) {
-		return pdi.findPowersByStatus(status);
+		ArrayList<Power> powers = new ArrayList<>();
+		List<Power> allPowers = getAllPowers();
+		for (Power power : allPowers) {
+			if (power.hasStatus(status)) {
+				powers.add(power);
+			}
+		}
+		return powers;
 	}
 
 	/**
@@ -101,7 +109,13 @@ public class PowerService {
 		}
 		power.setLeft(power.getLeft() + (power.getLeft() + amount > 100 ? 100 - power.getLeft() : amount));
 		power.removeStatus(Power.NO_POWER);
-		power.addStatus(Power.AVAILABLE);
+		if (power.getLeft() > 10) {
+			power.removeStatus(Power.LOW_POWER);
+			power.addStatus(Power.AVAILABLE);
+		} else {
+			power.addStatus(Power.LOW_POWER);
+			power.removeStatus(Power.AVAILABLE);
+		}
 		pdi.updatePower(power);
 	}
 

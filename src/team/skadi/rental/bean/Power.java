@@ -9,11 +9,16 @@ public class Power {
 	/** 能源不足 */
 	public static final int NO_POWER = 4;
 	/** 已损坏 */
-	public static final int BROKEN = 8;
+	public static final int LOW_POWER = 8;
+	/** 低电量 */
+	public static final int BROKEN = 16;
 	/** 该充电宝为空 */
 	public static final int NULL = 0;
 
-	public static final String[] STATUS_NAME = { "可借", "已借", "没电", "损坏" };
+	public static final int AVAILABLE_INDEX = 0, BORROWED_INDEX = 1, NO_POWER_INDEX = 2, LOW_POWER_INDEX = 3,
+			BROKEN_INDEX = 4;
+
+	public static final String[] STATUS_NAME = { "可借", "已借", "没电", "低电量", "损坏" };
 
 	/** 电源id */
 	private String id;
@@ -76,8 +81,8 @@ public class Power {
 		for (int i = 0; i < STATUS_NAME.length; i++) {
 			if (statusName.contains(STATUS_NAME[i])) {
 				status |= bin;
-				bin <<= 1;
 			}
+			bin <<= 1;
 		}
 		return status;
 	}
@@ -116,7 +121,8 @@ public class Power {
 
 	@Override
 	public String toString() {
-		return "Power [id=" + id + ", serialnum=" + serialnum + ", left=" + left + ", status=" + getStatusNameByStatu(status) + "]";
+		return "Power [id=" + id + ", serialnum=" + serialnum + ", left=" + left + ", status="
+				+ getStatusNameByStatu(status) + "]";
 	}
-	
+
 }

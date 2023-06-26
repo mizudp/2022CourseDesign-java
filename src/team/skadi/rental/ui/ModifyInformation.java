@@ -71,7 +71,7 @@ public class ModifyInformation extends BasicDialog {
 		String password = passwordField.getText();
 		if (name.equals(userLogin.getName()) && phoneNum.equals(userLogin.getPhoneNumber())
 				&& email.equals(userLogin.getEmail()) && password.equals(userLogin.getPassword())) {
-			JOptionPane.showMessageDialog(getOwner(), "请完善信息");
+			JOptionPane.showMessageDialog(getOwner(), "未修改！");
 			option = NOT_MODIFY_OPTION;
 			return true;
 		}

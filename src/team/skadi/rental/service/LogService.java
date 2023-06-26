@@ -34,7 +34,11 @@ public class LogService {
 	public static int addReturnLog(Log log) {
 		log.setEndDate(System.currentTimeMillis());
 		int time = getTime(log);
-		log.setContext(log.getContext() + "时长：" + time + "。花费：" + Main.getCost(time) + "元。");
+		if (time == 0) {
+			log.setContext(log.getContext() + "时长：" + time + "。花费：" + Main.getCost(time + 1) + "元。(不满1小时归还扣费)");
+		} else {
+			log.setContext(log.getContext() + "时长：" + time + "。花费：" + Main.getCost(time) + "元。");
+		}
 		ldi.finishLog(log);
 		return time;
 	}

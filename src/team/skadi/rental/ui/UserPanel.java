@@ -232,7 +232,7 @@ public class UserPanel extends JPanel implements ActionListener {
 		rentalTable.getSelectionModel().addListSelectionListener(e -> {
 			if (rentalTable.getSelectedRow() != -1) {
 				Power power = powerTableModel.getData().get(rentalTable.getSelectedRow());
-				lentbtn.setEnabled(power.hasStatus(Power.AVAILABLE) && power.getLeft() >= 30);
+				lentbtn.setEnabled(power.hasStatus(Power.AVAILABLE));
 			}
 		});
 		rentalPanel.add(new JScrollPane(rentalTable), BorderLayout.CENTER);
@@ -415,6 +415,7 @@ public class UserPanel extends JPanel implements ActionListener {
 			userPowerTableModel.setLog(log);
 			rentalPowerTableModel.setPower(power);
 			powerTableModel.changeData(PowerService.getInstance().getAllPowers());
+			logTableModel.changeData(LogService.queryLogs(userLogin));
 			changePanel(RENTAL_INFO_PANEL);
 		} else {
 			JOptionPane.showMessageDialog(mainFrame, "租借失败，你已经租借了一个了！");

@@ -7,14 +7,6 @@ import team.skadi.rental.bean.Power;
 public interface PowerDao {
 
 	/**
-	 * 根据充电宝的状态获取相应状态的充电宝列表
-	 * 
-	 * @param status 充电宝状态
-	 * @return 充电宝列表
-	 */
-	List<Power> findPowersByStatus(int status);
-
-	/**
 	 * 查找大于大于gtLeft电量的充电宝
 	 * 
 	 * @param gtLeft 剩余电量

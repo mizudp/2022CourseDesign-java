@@ -46,19 +46,18 @@ public class UserDaoImp implements UserDao {
 	@Override
 	public void updateUser(User user) {
 		Connection connection = DBUtil.getConnection();
-		String sql = "UPDATE users SET id=?,name=?,phoneNumber=?,password=?,balance=?,email=?,credit=? WHERE serialnum=?;";
+		String sql = "UPDATE users SET name=?,phoneNumber=?,password=?,balance=?,email=?,credit=? WHERE serialnum=?;";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
 			stat = connection.prepareStatement(sql);
-			stat.setString(1, user.getId());
-			stat.setString(2, user.getName());
-			stat.setString(3, user.getPhoneNumber());
-			stat.setString(4, user.getPassword());
-			stat.setDouble(5, user.getBalance());
-			stat.setString(6, user.getEmail());
-			stat.setInt(7, user.getCredit());
-			stat.setInt(8, user.getSerialnum());
+			stat.setString(1, user.getName());
+			stat.setString(2, user.getPhoneNumber());
+			stat.setString(3, user.getPassword());
+			stat.setDouble(4, user.getBalance());
+			stat.setString(5, user.getEmail());
+			stat.setInt(6, user.getCredit());
+			stat.setInt(7, user.getSerialnum());
 			stat.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

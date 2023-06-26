@@ -250,23 +250,22 @@ public class ManagerPanel extends JPanel implements ActionListener {
 	}
 
 	private void onMoitfyBtnClick() {
-		int row;
+		int row = searchPanel.getSearchMode() == SearchPanel.USER_MODE ? userTable.getSelectedRow()
+				: powerTable.getSelectedRow();
+		if (row == -1) {
+			JOptionPane.showMessageDialog(mainFrame, "你还没有选择任何数据！");
+			return;
+		}
 		switch (searchPanel.getSearchMode()) {
 		case SearchPanel.USER_MODE:
-			row = userTable.getSelectedRow();
-			if (row != -1) {
-				User user = new UserOption(mainFrame, OptionDialog.MODIFY_MODE, userTableModel.getUser(row)).getUser();
-				userTableModel.setUser(row, user);
-			}
+			User user = new UserOption(mainFrame, OptionDialog.MODIFY_MODE, userTableModel.getUser(row)).getUser();
+			userTableModel.setUser(row, user);
 			break;
 		case SearchPanel.POWER_MODE:
-			row = powerTable.getSelectedRow();
-			if (row != -1) {
-				Power power2 = powerTableModel.getPower(row);
-				if (!power2.hasStatus(Power.BORROWED)) {
-					Power power = new PowerOption(mainFrame, OptionDialog.MODIFY_MODE, power2).getPower();
-					powerTableModel.setPower(row, power);
-				}
+			Power power2 = powerTableModel.getPower(row);
+			if (!power2.hasStatus(Power.BORROWED)) {
+				Power power = new PowerOption(mainFrame, OptionDialog.MODIFY_MODE, power2).getPower();
+				powerTableModel.setPower(row, power);
 			}
 			break;
 		}
@@ -296,7 +295,7 @@ public class ManagerPanel extends JPanel implements ActionListener {
 				if (JOptionPane.showConfirmDialog(mainFrame,
 						"你确定要删除" + powerTableModel.getPower(row).getId()) == JOptionPane.YES_OPTION) {
 					powerTableModel.removePower(row);
-					powerTableModel.changeData(PowerService.getInstance().getAllPowers());					
+					powerTableModel.changeData(PowerService.getInstance().getAllPowers());
 					JOptionPane.showMessageDialog(mainFrame, "已删除");
 				} else {
 					JOptionPane.showMessageDialog(mainFrame, "已取消");

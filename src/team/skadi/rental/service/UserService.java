@@ -92,7 +92,7 @@ public class UserService {
 	public boolean giveBack(User userLogin, Power power) {
 		Log log = LogService.getLog(userLogin);
 		if (log != null) {
-			if (power.hasStatus(Power.NO_POWER)) {
+			if (power.hasStatus(Power.NO_POWER | Power.LOW_POWER)) {
 				power.removeStatus(Power.BORROWED);
 			} else {
 				power.setStatus(Power.AVAILABLE);
@@ -122,10 +122,10 @@ public class UserService {
 			return false;
 		}
 		power.setLeft(power.getLeft() - amount);
-		if (power.getLeft() == 0) {
-			power.addStatus(Power.NO_POWER);
+		if (power.getLeft() <= 10) {
+			power.addStatus(power.getLeft() == 0 ? Power.NO_POWER : Power.LOW_POWER);
 		}
-//		PowerService.getInstance().modify(power);
+//		PowerService.getInstance().modify(power);//已经在别处调用
 		return true;
 	}
 

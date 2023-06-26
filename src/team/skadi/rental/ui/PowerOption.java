@@ -33,7 +33,7 @@ public class PowerOption extends OptionDialog implements ChangeListener {
 	private SpinnerNumberModel spinnerNumberModel;
 	private ArrayList<JCheckBox> checkBoxs;
 
-	private static final boolean[] ENABLE = { true, false, false, true };
+	private static final boolean[] ENABLE = { true, false, false, false, true };
 
 	public PowerOption(JFrame frame, int mode, Power power) {
 		super(frame, mode);
@@ -95,16 +95,19 @@ public class PowerOption extends OptionDialog implements ChangeListener {
 				}
 				bin <<= 1;
 			}
-			checkBoxs.get(3).addActionListener(e -> {
+			checkBoxs.get(Power.AVAILABLE_INDEX).setEnabled(power.getLeft() > 10);
+//			checkBoxs.get(Power.AVAILABLE_INDEX).setEnabled(power.getLeft() > 10);
+			checkBoxs.get(Power.BROKEN_INDEX).addActionListener(e -> {
 				JCheckBox brokenCheckBox = (JCheckBox) e.getSource();
 				boolean selected = !brokenCheckBox.isSelected();
-				checkBoxs.get(0).setEnabled(selected);
-				checkBoxs.get(0).setSelected(selected);
+				boolean b = selected && spinnerNumberModel.getNumber().intValue() > 10;
+				checkBoxs.get(Power.AVAILABLE_INDEX).setEnabled(b);
+				checkBoxs.get(Power.AVAILABLE_INDEX).setSelected(b);
 			});
 		} else {
 			idField.setEditable(false);
 			idField.setText("该id由系统生成");
-			checkBoxs.get(0).setSelected(true);
+			checkBoxs.get(Power.AVAILABLE_INDEX).setSelected(true);
 			for (int i = 0; i < ENABLE.length; i++) {
 				checkBoxs.get(i).setEnabled(false);
 			}
@@ -125,6 +128,9 @@ public class PowerOption extends OptionDialog implements ChangeListener {
 			power.setId(idField.getText());
 			int left = (int) spinnerNumberModel.getNumber();
 			power.setLeft(left);
+			checkBoxs.get(Power.NO_POWER_INDEX).setSelected(left == 0);
+			checkBoxs.get(Power.LOW_POWER_INDEX).setSelected(left != 0 && left <= 10);
+			checkBoxs.get(Power.AVAILABLE_INDEX).setSelected(left > 10);
 			for (int i = 0, bin = 1; i < ENABLE.length; i++) {
 				if (checkBoxs.get(i).isSelected()) {
 					power.addStatus(bin);
@@ -133,27 +139,25 @@ public class PowerOption extends OptionDialog implements ChangeListener {
 				}
 				bin <<= 1;
 			}
-			if (left == 0) {
-				power.addStatus(Power.NO_POWER);
-				power.removeStatus(Power.AVAILABLE);
+			if (mode == ADD_MODE) {
+				ManagerService.getInstance().addPower(power);
+				JOptionPane.showMessageDialog(getOwner(), "增加成功！");
 			} else {
-				checkBoxs.get(2).setSelected(false);
+				ManagerService.getInstance().modifyPower(power);
+				JOptionPane.showMessageDialog(getOwner(), "修改成功！");
 			}
+			option = MODIFY_OPTION;
 		}
-
-		if (mode == ADD_MODE) {
-			ManagerService.getInstance().addPower(power);
-			JOptionPane.showMessageDialog(getOwner(), "增加成功！");
-		} else {
-			ManagerService.getInstance().modifyPower(power);
-			JOptionPane.showMessageDialog(getOwner(), "修改成功！");
-		}
-		option = MODIFY_OPTION;
+		option = NOT_MODIFY_OPTION;
 		return true;
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		checkBoxs.get(2).setSelected(spinnerNumberModel.getNumber().intValue() == 0);
+		int intValue = spinnerNumberModel.getNumber().intValue();
+		checkBoxs.get(Power.NO_POWER_INDEX).setSelected(intValue == 0);
+		checkBoxs.get(Power.LOW_POWER_INDEX).setSelected(intValue != 0 && intValue <= 10);
+		checkBoxs.get(Power.AVAILABLE_INDEX).setSelected(intValue > 10);
+		checkBoxs.get(Power.AVAILABLE_INDEX).setEnabled(mode == MODIFY_MODE ? intValue > 10 : false);
 	}
 }
