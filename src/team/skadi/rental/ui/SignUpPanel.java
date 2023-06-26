@@ -70,7 +70,7 @@ public class SignUpPanel extends JPanel implements ActionListener {
 		centerPanel.add(phoneNumField, gbc);
 
 		gbc.gridy++;
-		label = new JLabel("邮箱：", JLabel.CENTER);
+		label = new JLabel("邮箱(选填)：", JLabel.CENTER);
 		centerPanel.add(label, gbc);
 		emailField = new JTextField(20);
 		centerPanel.add(emailField, gbc);

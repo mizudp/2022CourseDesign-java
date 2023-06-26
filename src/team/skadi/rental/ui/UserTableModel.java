@@ -20,7 +20,6 @@ public class UserTableModel extends BasicTableModel {
 
 	public UserTableModel(int mode) {
 		super(mode);
-		this.userList = new ArrayList<>();
 	}
 
 	public void changeData(List<User> userList) {
@@ -94,6 +93,9 @@ public class UserTableModel extends BasicTableModel {
 
 	@Override
 	public int getRowCount() {
+		if (userList == null) {
+			return 0;
+		}
 		return userList.size();
 	}
 

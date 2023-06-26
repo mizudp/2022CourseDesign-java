@@ -36,7 +36,7 @@ public class HelpPanel extends JPanel implements ActionListener {
 		hashMap = new HashMap<>();
 		hashMap.put("关于注册", "注册时，邮箱和手机号码二选一");
 		hashMap.put("关于信誉分", "当余额小于零时，信誉分每天减少10。当信誉分小于50时，不能租借移动电源！");
-		hashMap.put("关于移动电源租借", "每个账户只能借一个移动电源。不满一个小时按照一个小时来算哦！移动电源收费标准为" + Main.CHARGING_STANDARD + "元每小时");
+		hashMap.put("关于移动电源租借", "每个账户只能借一个移动电源。\n不满一个小时按照一个小时来算哦！移动电源收费标准为" + Main.CHARGING_STANDARD + "元每小时");
 	}
 
 	private void bulidLayout() {

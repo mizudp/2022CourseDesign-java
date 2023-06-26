@@ -20,7 +20,6 @@ public class PowerTableModel extends BasicTableModel {
 
 	public PowerTableModel(int mode) {
 		super(mode);
-		this.powerList = new ArrayList<>();
 	}
 
 	public void changeData(List<Power> powerList) {
@@ -91,6 +90,9 @@ public class PowerTableModel extends BasicTableModel {
 
 	@Override
 	public int getRowCount() {
+		if (powerList==null) {
+			return 0;
+		}
 		return powerList.size();
 	}
 

@@ -30,7 +30,7 @@ public class UserPowerTableModel extends AbstractTableModel {
 		this.log = log;
 		fireTableDataChanged();
 	}
-	
+
 	public void clearLog() {
 		setLog(null);
 	}
@@ -83,7 +83,7 @@ public class UserPowerTableModel extends AbstractTableModel {
 		case 2:
 			return timeSpan;
 		case 3:
-			return Main.getCost(timeSpan);
+			return Main.getCost(timeSpan == 0 ? timeSpan + 1 : timeSpan);
 		case 4:
 			final JButton optionBtn = new JButton("归还该移动电源");
 			optionBtn.addActionListener(l);
@@ -92,7 +92,7 @@ public class UserPowerTableModel extends AbstractTableModel {
 			return null;
 		}
 	}
-	
+
 	public void setPreferredWidth(TableColumnModel columnModel) {
 		columnModel.getColumn(0).setPreferredWidth(1);
 		columnModel.getColumn(2).setPreferredWidth(1);

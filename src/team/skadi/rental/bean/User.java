@@ -98,6 +98,7 @@ public class User {
 	}
 
 	public User() {
+		credit = 100;
 	}
 
 	@Override

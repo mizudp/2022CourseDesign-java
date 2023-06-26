@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -122,14 +123,27 @@ public class UserOption extends OptionDialog {
 			String phoneNumber = phoneNumberField.getText();
 			String email = emailField.getText();
 			String password = passwordField.getText();
+			double balance = user.getBalance();
+			int credit = user.getCredit();
+			try {
+				String balanceStr = balanceField.getText();
+				balance = balanceStr.equals("") ? 0 : Double.parseDouble(balanceStr);
+				String creditStr = creditField.getText();
+				credit = creditStr.equals("") ? 0 : Integer.parseInt(creditStr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			if (mode == MODIFY_MODE && name.equals(user.getName()) && phoneNumber.equals(user.getPhoneNumber())
-					&& email.equals(user.getEmail()) && password.equals(user.getPassword())) {
+					&& email.equals(user.getEmail()) && password.equals(user.getPassword())
+					&& balance == user.getBalance() && credit == user.getCredit()) {
 				option = NOT_MODIFY_OPTION;
+				JOptionPane.showMessageDialog(getOwner(), "数据未修改！");
 				return true;
 			}
 			if (mode == ADD_MODE
 					&& (name.equals("") || (phoneNumber.equals("") && email.equals("")) || password.equals(""))) {
 				option = NOT_MODIFY_OPTION;
+				JOptionPane.showMessageDialog(getOwner(), "检测到数据为空！");
 				user = null;
 				return true;
 			}
@@ -137,20 +151,14 @@ public class UserOption extends OptionDialog {
 			user.setPhoneNumber(phoneNumber);
 			user.setEmail(email);
 			user.setPassword(password);
-			try {
-				String balanceStr = balanceField.getText();
-				double balance = balanceStr.equals("") ? 0 : Double.parseDouble(balanceStr);
-				user.setBalance(balance);
-				String creditStr = creditField.getText();
-				int credit = creditStr.equals("") ? 0 : Integer.parseInt(creditStr);
-				user.setCredit(credit);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			user.setBalance(balance);
+			user.setCredit(credit);
 			if (mode == MODIFY_MODE) {
 				UserService.getInstance().modify(user);
+				JOptionPane.showMessageDialog(getOwner(), "修改成功！");
 			} else if (mode == ADD_MODE) {
 				user = ManagerService.getInstance().addUser(user);
+				JOptionPane.showMessageDialog(getOwner(), "增加成功！");
 			}
 		}
 		option = MODIFY_OPTION;

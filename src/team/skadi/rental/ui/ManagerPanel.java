@@ -278,15 +278,31 @@ public class ManagerPanel extends JPanel implements ActionListener {
 		case SearchPanel.USER_MODE:
 			row = userTable.getSelectedRow();
 			if (row != -1) {
-				userTableModel.removeUser(row);
-				userTableModel.changeData(ManagerService.getInstance().getAllUsers());
+				if (JOptionPane.showConfirmDialog(mainFrame,
+						"你确定要删除" + userTableModel.getUser(row).getName()) == JOptionPane.YES_OPTION) {
+					userTableModel.removeUser(row);
+					userTableModel.changeData(ManagerService.getInstance().getAllUsers());
+					JOptionPane.showMessageDialog(mainFrame, "已删除");
+				} else {
+					JOptionPane.showConfirmDialog(mainFrame, "已取消");
+				}
+			} else {
+				JOptionPane.showMessageDialog(mainFrame, "已取消");
 			}
 			break;
 		case SearchPanel.POWER_MODE:
 			row = powerTable.getSelectedRow();
 			if (row != -1) {
-				powerTableModel.removePower(row);
-				powerTableModel.changeData(PowerService.getInstance().getAllPowers());
+				if (JOptionPane.showConfirmDialog(mainFrame,
+						"你确定要删除" + powerTableModel.getPower(row).getId()) == JOptionPane.YES_OPTION) {
+					powerTableModel.removePower(row);
+					powerTableModel.changeData(PowerService.getInstance().getAllPowers());					
+					JOptionPane.showMessageDialog(mainFrame, "已删除");
+				} else {
+					JOptionPane.showMessageDialog(mainFrame, "已取消");
+				}
+			} else {
+				JOptionPane.showMessageDialog(mainFrame, "你还没有选择任何的移动电源！");
 			}
 			break;
 		}

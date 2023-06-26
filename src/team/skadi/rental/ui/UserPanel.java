@@ -58,12 +58,14 @@ public class UserPanel extends JPanel implements ActionListener {
 	private JPanel innerPanel;
 	private JButton lentbtn;
 
-	private JTable logTable;
 	private LogTableModel logTableModel;
+	private JTable logTable;
 	private UserPowerTableModel userPowerTableModel;
 	private JTable userPowerTable;
 	private PowerTableModel powerTableModel;
 	private JTable rentalTable;
+	private RentalPowerTableModel rentalPowerTableModel;
+	private JTable rentalPowerTable;
 
 	private SearchPanel logSearchPanel;
 	private SearchPanel powerSearchPanel;
@@ -244,7 +246,7 @@ public class UserPanel extends JPanel implements ActionListener {
 	private JPanel getRentalInfoPanel() {
 		JLabel label;
 
-		JPanel rentalPanel = new JPanel(new BorderLayout());
+		JPanel rentalPanel = new JPanel(new GridLayout(4, 1));
 		label = new JLabel("已经租借的移动电源：", JLabel.LEFT);
 		label.setFont(Main.MIDDLE_FONT);
 		rentalPanel.add(label, BorderLayout.NORTH);
@@ -282,7 +284,17 @@ public class UserPanel extends JPanel implements ActionListener {
 		userPowerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		userPowerTable.setRowHeight(30);
 
-		rentalPanel.add(new JScrollPane(userPowerTable), BorderLayout.CENTER);
+		rentalPanel.add(new JScrollPane(userPowerTable));
+
+		label = new JLabel("当前租借的电源状况：", JLabel.LEFT);
+		label.setFont(Main.MIDDLE_FONT);
+		rentalPanel.add(label);
+
+		rentalPowerTableModel = new RentalPowerTableModel();
+		rentalPowerTable = new JTable(rentalPowerTableModel);
+		rentalPowerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		rentalPowerTable.setRowHeight(30);
+		rentalPanel.add(new JScrollPane(rentalPowerTable));
 
 		rentalPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		return rentalPanel;
@@ -293,10 +305,11 @@ public class UserPanel extends JPanel implements ActionListener {
 		UserService.getInstance().use(userLogin, power, Main.getRandom(power.getLeft() > 10 ? 10 : 0, power.getLeft()));
 		UserService.getInstance().giveBack(userLogin, power);
 		userPowerTableModel.clearLog();
+		rentalPowerTableModel.clearPower();
 		changePanel(EMPTY_PANEL);
 		log = null;
 		powerTableModel.changeData(PowerService.getInstance().getAllPowers());
-		logTableModel.changeData(LogService.getAllLogs());
+		logTableModel.changeData(LogService.queryLogs(userLogin));
 		updateLabel();
 	}
 
@@ -311,10 +324,11 @@ public class UserPanel extends JPanel implements ActionListener {
 				changePanel(EMPTY_PANEL);
 			} else {
 				userPowerTableModel.setLog(log);
+				rentalPowerTableModel.setPower(PowerService.getInstance().getPowerById(log.getPowerId()));
 				changePanel(RENTAL_INFO_PANEL);
 			}
 			// 获取用户的所有订单
-			logTableModel.changeData(LogService.getAllLogs());
+			logTableModel.changeData(LogService.queryLogs(userLogin));
 			// 获得所有电源
 			powerTableModel.changeData(PowerService.getInstance().getAllPowers());
 
@@ -378,7 +392,10 @@ public class UserPanel extends JPanel implements ActionListener {
 	}
 
 	private void refash() {
-		userPowerTableModel.setLog(LogService.getLog(userLogin));
+		Log refashlog = LogService.getLog(userLogin);
+		userPowerTableModel.setLog(refashlog);
+		rentalPowerTableModel
+				.setPower(refashlog == null ? null : PowerService.getInstance().getPowerById(refashlog.getPowerId()));
 		powerTableModel.changeData(PowerService.getInstance().getAllPowers());
 		logTableModel.changeData(LogService.queryLogs(userLogin));
 		logSearchPanel.close();
@@ -396,38 +413,61 @@ public class UserPanel extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(mainFrame, "租借" + power.getId() + "成功！");
 			log = LogService.getLog(userLogin);
 			userPowerTableModel.setLog(log);
+			rentalPowerTableModel.setPower(power);
 			powerTableModel.changeData(PowerService.getInstance().getAllPowers());
+			changePanel(RENTAL_INFO_PANEL);
 		} else {
 			JOptionPane.showMessageDialog(mainFrame, "租借失败，你已经租借了一个了！");
 		}
 	}
 
 	private void modifyUserInformation() {
-		String password = JOptionPane.showInputDialog(mainFrame, "请输入你的密码：");
-		if (password != null) {
-			if (password.equals(userLogin.getPassword())) {
-				int result = new ModifyInformation(mainFrame, userLogin).getResult();
-				if (result == ModifyInformation.MODIFY_OPTION) {
-					JOptionPane.showMessageDialog(mainFrame, "修改成功，请重新登录！");
-					mainFrame.showPreviousPanel();
+		while (true) {
+			String password = JOptionPane.showInputDialog(mainFrame, "请输入你的密码：", "修改个人信息",
+					JOptionPane.QUESTION_MESSAGE);
+			if (password != null) {
+				if (password.equals(userLogin.getPassword())) {
+					int result = new ModifyInformation(mainFrame, userLogin).getResult();
+					if (result == ModifyInformation.MODIFY_OPTION) {
+						JOptionPane.showMessageDialog(mainFrame, "修改成功，请重新登录！");
+						mainFrame.showPreviousPanel();
+					}
+					break;
+				} else {
+					JOptionPane.showMessageDialog(mainFrame, "密码错误，请重新输入！");
+					continue;
 				}
 			} else {
-				JOptionPane.showMessageDialog(mainFrame, "密码错误！");
+				break;
 			}
 		}
 	}
 
 	private void rechargeBalance() {
-		String input = JOptionPane.showInputDialog(mainFrame, "请输入你要充值的金额：");
-		if (input != null && !input.equals("")) {
-			try {
-				double balance = Double.parseDouble(input);
-				userLogin.setBalance(userLogin.getBalance() + balance);
-				UserService.getInstance().modify(userLogin);
-				JOptionPane.showMessageDialog(mainFrame, "充值成功！你现在的账户余额为：" + userLogin.getBalance());
-				updateLabel();
-			} catch (NumberFormatException e2) {
-				JOptionPane.showMessageDialog(mainFrame, "你输入的不是数字！");
+		while (true) {
+			String input = JOptionPane.showInputDialog(mainFrame, "请输入你要充值的金额：");
+			if (input != null) {
+				if (input.equals("")) {
+					JOptionPane.showMessageDialog(mainFrame, "输入的金额不能为空！");
+					continue;
+				}
+				try {
+					double balance = Double.parseDouble(input);
+					if (balance <= 0) {
+						JOptionPane.showMessageDialog(mainFrame, "不能输入负数或零！");
+						continue;
+					}
+					userLogin.setBalance(userLogin.getBalance() + balance);
+					UserService.getInstance().modify(userLogin);
+					JOptionPane.showMessageDialog(mainFrame, "充值成功！你现在的账户余额为：" + userLogin.getBalance() + "元");
+					updateLabel();
+					break;
+				} catch (NumberFormatException e2) {
+					JOptionPane.showMessageDialog(mainFrame, "你输入的不是数字！");
+					continue;
+				}
+			} else {
+				break;
 			}
 		}
 	}

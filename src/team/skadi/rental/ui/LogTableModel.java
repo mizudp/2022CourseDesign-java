@@ -2,7 +2,6 @@ package team.skadi.rental.ui;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -23,7 +22,6 @@ public class LogTableModel extends BasicTableModel {
 
 	public LogTableModel(int mode) {
 		super(mode);
-		this.logList = new ArrayList<>();
 		this.mode = mode;
 		if (mode == USER_MODE) {
 			title = new String[] { "移动电源id", "租借时间", "归还时间", "内容" };
@@ -60,6 +58,9 @@ public class LogTableModel extends BasicTableModel {
 
 	@Override
 	public int getRowCount() {
+		if (logList == null) {
+			return 0;
+		}
 		return logList.size();
 	}
 
