@@ -133,12 +133,15 @@ public class LoginPanel extends JPanel implements ActionListener {
 			login();
 		} else if (source.equals(signUpBtn)) {
 			mainFrame.showPanel(PanelName.LOGIN, PanelName.SIGN_UP);
+			passwordField.setText("");
 		} else if (source.equals(exitBtn)) {
 			mainFrame.dispose();
 		} else if (source.equals(managerBtn)) {
 			mainFrame.showPanel(PanelName.LOGIN, PanelName.MANAGER_LOGIN);
+			passwordField.setText("");
 		} else if (source.equals(helpBtn)) {
 			mainFrame.showPanel(PanelName.LOGIN, PanelName.HELP);
+			passwordField.setText("");
 		}
 	}
 

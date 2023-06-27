@@ -20,12 +20,13 @@ public class ManagerDaoImp implements ManagerDao {
 		String sql = "select * from mangers WHERE id=?;";
 		PreparedStatement stat = null;
 		ResultSet rs = null;
-		Manager manger = new Manager();
+		Manager manger = null;
 		try {
 			stat = connection.prepareStatement(sql);
 			stat.setString(1, id);
 			rs = stat.executeQuery();
 			while (rs.next()) {
+				manger = new Manager();
 				manger.setId(rs.getString("id"));
 				manger.setName(rs.getString("name"));
 				manger.setPassword(rs.getString("password"));

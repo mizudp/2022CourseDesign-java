@@ -98,6 +98,7 @@ public class ManagerLoginPanel extends JPanel implements ActionListener {
 			login();
 		} else {// returnBtn
 			mainFrame.showPreviousPanel();
+			passwordField.setText("");
 		}
 	}
 

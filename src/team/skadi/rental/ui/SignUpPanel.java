@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -67,6 +68,7 @@ public class SignUpPanel extends JPanel implements ActionListener {
 		label = new JLabel("电话号码：", JLabel.CENTER);
 		centerPanel.add(label, gbc);
 		phoneNumField = new JTextField(20);
+		phoneNumField.addKeyListener(new NumberOnly());
 		centerPanel.add(phoneNumField, gbc);
 
 		gbc.gridy++;
@@ -138,8 +140,9 @@ public class SignUpPanel extends JPanel implements ActionListener {
 		Object source = e.getSource();
 		if (source.equals(finishBtn)) {
 			finish();
-		} else if (source.equals(returnBtn)) {// returnBtn
+		} else if (source.equals(returnBtn)) {
 			mainFrame.showPreviousPanel();
+			reset();
 		} else if (source.equals(helpBtn)) {
 			mainFrame.showPanel(PanelName.SIGN_UP, PanelName.HELP);
 		}
@@ -154,11 +157,19 @@ public class SignUpPanel extends JPanel implements ActionListener {
 		String phoneNum = phoneNumField.getText();
 		String email = emailField.getText();
 		if (phoneNum.equals("") && email.equals("")) {
-			JOptionPane.showMessageDialog(mainFrame, "邮箱和电话号码二选一");
+			JOptionPane.showMessageDialog(mainFrame, "邮箱和电话号码二选一！");
+			return;
+		}
+		if (email.length() > 0 && !Pattern.matches("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$", email)) {
+			JOptionPane.showMessageDialog(mainFrame, "邮箱格式错误！");
 			return;
 		}
 		String pwd1 = new String(passwordField.getPassword());
 		String pwd2 = new String(passwordField2.getPassword());
+		if (pwd1.length() < 6 || pwd2.length() < 6) {
+			JOptionPane.showMessageDialog(mainFrame, "密码长度太短了哦，最小是6位密码哦！");
+			return;
+		}
 		if (pwd1.equals("") || pwd2.equals("")) {
 			JOptionPane.showMessageDialog(mainFrame, "你还没有输入你的密码呢！");
 			return;
@@ -170,6 +181,10 @@ public class SignUpPanel extends JPanel implements ActionListener {
 		User user = UserService.getInstance().signIn(name, pwd2, phoneNum, email);
 		JOptionPane.showMessageDialog(mainFrame, "注册成功，欢迎使用本电源租凭系统！\n你的账户是：" + user.getId() + "。请牢记你的登录账号和密码");
 		mainFrame.showPreviousPanel();
+		reset();
+	}
+
+	private void reset() {
 		nameField.setText("");
 		phoneNumField.setText("");
 		emailField.setText("");
